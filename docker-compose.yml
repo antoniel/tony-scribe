@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tony-scribe-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tony_scribe
+    ports:
+      - '51143:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d tony_scribe']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tony-scribe-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  tony-scribe-network:
+    driver: bridge
