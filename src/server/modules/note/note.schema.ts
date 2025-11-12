@@ -13,7 +13,7 @@ export const createNoteSchema = createInsertSchema(Notes, {
   updatedAt: true
 })
 
-export const updateNoteSchema = createNoteSchema.omit({ patientId: true }).partial()
+export const updateNoteSchema = createNoteSchema.omit({ studentId: true }).partial()
 
 export const noteIdParamSchema = z.object({ id: z.string() })
 

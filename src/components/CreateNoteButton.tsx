@@ -19,7 +19,7 @@ export function CreateNoteButton({ patientId, variant = 'default', size = 'defau
     e.stopPropagation()
     createNoteMutation.mutate(
       {
-        patientId,
+        studentId: patientId,
         rawContent: ''
       },
       {

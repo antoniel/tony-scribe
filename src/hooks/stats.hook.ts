@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 export interface PatientWithStats {
   id: string
   name: string
-  dateOfBirth: string
+  enrollmentDate: string
   createdAt: string
   updatedAt: string
   notesCount: number

@@ -1,42 +1,42 @@
 import { eq } from 'drizzle-orm'
 import { db } from './index'
-import { Patients, newId } from './schema'
+import { Students, newId } from './schema'
 
-const seedPatients = async () => {
+const seedStudents = async () => {
   try {
-    console.log('Seeding database with initial patients...')
+    console.log('Seeding database with initial students...')
 
     const seedData = [
       {
-        name: 'João Silva',
-        dateOfBirth: new Date('1980-05-15')
+        name: 'Ana Clara Costa',
+        enrollmentDate: new Date('2023-03-15')
       },
       {
-        name: 'Maria Santos',
-        dateOfBirth: new Date('1992-08-22')
+        name: 'Bruno Henrique Lima',
+        enrollmentDate: new Date('2022-08-22')
       },
       {
-        name: 'Carlos Oliveira',
-        dateOfBirth: new Date('1975-03-10')
+        name: 'Carolina Ferreira',
+        enrollmentDate: new Date('2024-01-10')
       }
     ]
 
     const now = new Date()
 
-    for (const patient of seedData) {
-      const existing = await db.select().from(Patients).where(eq(Patients.name, patient.name)).limit(1)
+    for (const student of seedData) {
+      const existing = await db.select().from(Students).where(eq(Students.name, student.name)).limit(1)
 
       if (existing.length === 0) {
-        await db.insert(Patients).values({
-          name: patient.name,
-          dateOfBirth: patient.dateOfBirth,
+        await db.insert(Students).values({
+          name: student.name,
+          enrollmentDate: student.enrollmentDate,
           createdAt: now,
           updatedAt: now,
-          id: newId('patient')
+          id: newId('student')
         })
-        console.log(`✓ Created patient: ${patient.name}`)
+        console.log(`✓ Created student: ${student.name}`)
       } else {
-        console.log(`→ Patient already exists: ${patient.name}`)
+        console.log(`→ Student already exists: ${student.name}`)
       }
     }
 
@@ -48,7 +48,7 @@ const seedPatients = async () => {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  seedPatients()
+  seedStudents()
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error)
@@ -56,4 +56,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     })
 }
 
-export { seedPatients }
+export { seedStudents }

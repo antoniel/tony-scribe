@@ -9,19 +9,19 @@ export interface SummaryTemplate {
 export const SUMMARY_TEMPLATES: SummaryTemplate[] = [
   {
     id: 'soap',
-    name: 'SOAP Note',
-    description: 'Structured format with Subjective, Objective, Assessment, and Plan sections. Ideal for clinical documentation and progress tracking.'
+    name: 'Academic Progress Report',
+    description: 'Structured format with Situation, Observations, Analysis, and Plan sections. Ideal for student progress tracking and academic documentation.'
   },
   {
     id: 'progress',
-    name: 'Progress Note',
-    description: 'Structured format with History, Exam, Assessment, and Plan sections. Suitable for ongoing patient care documentation.'
+    name: 'Learning Assessment',
+    description: 'Structured format with Background, Performance, Assessment, and Action Plan sections. Suitable for ongoing student development documentation.'
   },
   {
     id: 'discharge',
-    name: 'Discharge Summary',
+    name: 'Course Completion Summary',
     description:
-      'Structured format with Admission Diagnosis, Hospital Course, Discharge Condition, and Discharge Instructions. Perfect for patient discharge documentation.'
+      'Structured format with Initial Assessment, Learning Journey, Final Status, and Recommendations. Perfect for end-of-course student documentation.'
   }
 ]
 

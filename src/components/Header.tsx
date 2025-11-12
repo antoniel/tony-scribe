@@ -28,8 +28,8 @@ export default function Header() {
         }`}
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h2 className="text-xl font-bold">Navigation</h2>
-          <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-800 rounded-lg transition-colors" aria-label="Close menu">
+          <h2 className="text-xl font-bold">Navegação</h2>
+          <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-800 rounded-lg transition-colors" aria-label="Fechar menu">
             <X size={24} />
           </button>
         </div>
@@ -44,7 +44,7 @@ export default function Header() {
             }}
           >
             <Home size={20} />
-            <span className="font-medium">Home</span>
+            <span className="font-medium">Início</span>
           </Link>
 
           <div className="border-t border-gray-700 my-4"></div>
@@ -58,7 +58,7 @@ export default function Header() {
             }}
           >
             <Database size={20} />
-            <span className="font-medium">Patients</span>
+            <span className="font-medium">Estudantes</span>
           </Link>
 
           <div className="border-t border-gray-700 my-4"></div>

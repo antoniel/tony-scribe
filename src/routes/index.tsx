@@ -44,10 +44,10 @@ function PatientRoster() {
     return (
       <Card className="bg-slate-800/50 border-slate-700">
         <CardPanel className="p-12 text-center">
-          <p className="text-slate-400 mb-6">No patients found. Create your first patient to get started.</p>
+          <p className="text-slate-400 mb-6">Nenhum estudante encontrado. Crie seu primeiro estudante para começar.</p>
           <Button variant="default" size="lg">
             <Link to="/patients/new" className="inline-flex" />
-            Add First Patient
+            Adicionar Primeiro Estudante
           </Button>
         </CardPanel>
       </Card>
@@ -58,12 +58,12 @@ function PatientRoster() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Patient Roster</h2>
-          <p className="text-slate-400 mt-1">Select a patient to view or create notes</p>
+          <h2 className="text-2xl font-bold text-white">Roster de Estudantes</h2>
+          <p className="text-slate-400 mt-1">Selecione um estudante para visualizar ou criar notas</p>
         </div>
         <Button variant="default">
           <Link to="/patients/new" className="inline-flex">
-            Add Patient
+            Adicionar Estudante
           </Link>
         </Button>
       </div>
@@ -79,17 +79,17 @@ function PatientRoster() {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">{patient.name}</h3>
-                  <p className="text-sm text-slate-400 mt-1">DOB: {formatDate(new Date(patient.dateOfBirth))}</p>
+                  <p className="text-sm text-slate-400 mt-1">Matrícula: {formatDate(new Date(patient.enrollmentDate))}</p>
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                   <div>
-                    <p className="text-xs text-slate-500">Total Notes</p>
+                    <p className="text-xs text-slate-500">Total de Notas</p>
                     <p className="text-xl font-bold text-cyan-400">{patient.notesCount}</p>
                   </div>
                   {patient.lastNoteDate && (
                     <div className="text-right">
-                      <p className="text-xs text-slate-500">Last Note</p>
+                      <p className="text-xs text-slate-500">Última Nota</p>
                       <p className="text-sm text-slate-300">{formatDate(new Date(patient.lastNoteDate))}</p>
                     </div>
                   )}
@@ -97,7 +97,7 @@ function PatientRoster() {
 
                 <div onClick={(e) => e.stopPropagation()}>
                   <CreateNoteButton patientId={patient.id} variant="outline" size="sm" className="w-full">
-                    + New Note
+                    + Nova Nota
                   </CreateNoteButton>
                 </div>
               </div>
@@ -112,7 +112,7 @@ function PatientRoster() {
 function StatsBar() {
   const { data: patients } = usePatientsWithStats()
 
-  const totalPatients = patients?.length || 0
+  const totalStudents = patients?.length || 0
   const totalNotes = patients?.reduce((sum, p) => sum + p.notesCount, 0) || 0
 
   return (
@@ -120,15 +120,15 @@ function StatsBar() {
       <Card className="bg-slate-800/50 border-slate-700">
         <CardPanel className="p-4">
           <div className="space-y-1">
-            <p className="text-sm font-medium text-slate-400">Total Patients</p>
-            <p className="text-2xl font-bold text-white">{totalPatients}</p>
+            <p className="text-sm font-medium text-slate-400">Total de Estudantes</p>
+            <p className="text-2xl font-bold text-white">{totalStudents}</p>
           </div>
         </CardPanel>
       </Card>
       <Card className="bg-slate-800/50 border-slate-700">
         <CardPanel className="p-4">
           <div className="space-y-1">
-            <p className="text-sm font-medium text-slate-400">Total Notes</p>
+            <p className="text-sm font-medium text-slate-400">Total de Relatórios</p>
             <p className="text-2xl font-bold text-white">{totalNotes}</p>
           </div>
         </CardPanel>

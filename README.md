@@ -1,10 +1,10 @@
 ## Overview
 
-This application simulates a core component of a home healthcare compliance suite, demonstrating:
+This application demonstrates a modern educational reporting system with the following features:
 
-- Patient record management with seeded mock data
-- Audio transcription using OpenAI Whisper
-- AI-generated clinical summaries in SOAP, Progress Note, and Discharge Summary formats
+- Student record management with seeded mock data
+- Audio transcription using OpenAI Whisper for voice-recorded notes
+- AI-generated educational reports: Academic Progress Report, Learning Assessment, and Course Completion Summary
 - Modern, type-safe full-stack architecture with React and Node.js
 - Production-grade features including cloud storage (Cloudflare R2) and real-time audio recording
 
@@ -36,15 +36,15 @@ This application simulates a core component of a home healthcare compliance suit
 
 ## Core Features
 
-### 1. Patient Management
+### 1. Student Management
 
-- Pre-seeded database with 3 mock patients (João Silva, Maria Santos, Carlos Oliveira)
-- Full CRUD operations for patient records
-- Patient list view with search and filtering
+- Pre-seeded database with 3 mock students (Ana Clara Costa, Bruno Henrique Lima, Carolina Ferreira)
+- Full CRUD operations for student records
+- Student roster view with enrollment dates
 
 ### 2. Note Creation & Management
 
-- Create notes associated with specific patients
+- Create notes and reports associated with specific students
 - Rich text editor with formatting options
 - Dual input modes: typed text or audio upload/recording
 - Real-time audio recording with waveform visualization
@@ -58,14 +58,14 @@ This application simulates a core component of a home healthcare compliance suit
 - Manual transcription retry on failure
 - Copy transcription to note editor
 
-### 4. AI Summary Generation
+### 4. AI Report Generation
 
-- Three clinical note templates:
-  - **SOAP Note**: Subjective, Objective, Assessment, Plan
-  - **Progress Note**: History, Exam, Assessment, Plan
-  - **Discharge Summary**: Admission Diagnosis, Hospital Course, Discharge Condition, Instructions
+- Three educational report templates:
+  - **Academic Progress Report**: Situation, Observations, Analysis, Plan sections for student progress tracking
+  - **Learning Assessment**: Background, Performance, Assessment, Action Plan for ongoing development
+  - **Course Completion Summary**: Initial Assessment, Learning Journey, Final Status, Recommendations
 - Structured output using GPT-4.1 with Zod schemas
-- Save and edit generated summaries
+- Save and edit generated reports
 
 ### 5. Note Listing & Detail Views
 
@@ -177,14 +177,14 @@ This creates the required tables (`patients` and `notes`).
 ### 5. Seed the Database
 
 ```bash
-npx tsx src/server/database/seed.ts
+node --import tsx --env-file=.env src/server/database/seed.ts
 ```
 
-This populates the database with 3 mock patients:
+This populates the database with 3 mock students:
 
-- João Silva (DOB: 1980-05-15)
-- Maria Santos (DOB: 1992-08-22)
-- Carlos Oliveira (DOB: 1975-03-10)
+- Ana Clara Costa (Enrolled: 2023-03-15)
+- Bruno Henrique Lima (Enrolled: 2022-08-22)
+- Carolina Ferreira (Enrolled: 2024-01-10)
 
 ### 6. Start the Development Server
 

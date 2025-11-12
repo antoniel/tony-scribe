@@ -1,7 +1,7 @@
 import { count, desc, eq, sql } from 'drizzle-orm'
 import type { Context } from 'hono'
 import type { z } from 'zod'
-import { Notes, Patients } from '../../database/schema'
+import { Notes, Students } from '../../database/schema'
 import type { AppResult } from '../../result'
 import { err, ok } from '../../result'
 import type { AppVariables } from '../../types'
@@ -12,7 +12,7 @@ type PatientError = { type: 'database_error'; error: unknown } | { type: 'patien
 export interface PatientWithNoteStats {
   id: string
   name: string
-  dateOfBirth: Date
+  enrollmentDate: Date
   createdAt: Date
   updatedAt: Date
   notesCount: number
@@ -24,17 +24,17 @@ export const getPatientsWithStats = async (c: Context<{ Variables: AppVariables 
   try {
     const results = await dbInstance
       .select({
-        id: Patients.id,
-        name: Patients.name,
-        dateOfBirth: Patients.dateOfBirth,
-        createdAt: Patients.createdAt,
-        updatedAt: Patients.updatedAt,
+        id: Students.id,
+        name: Students.name,
+        enrollmentDate: Students.enrollmentDate,
+        createdAt: Students.createdAt,
+        updatedAt: Students.updatedAt,
         notesCount: count(Notes.id),
         lastNoteDate: sql<Date | null>`max(${Notes.createdAt})`
       })
-      .from(Patients)
-      .leftJoin(Notes, eq(Patients.id, Notes.patientId))
-      .groupBy(Patients.id, Patients.name, Patients.dateOfBirth, Patients.createdAt, Patients.updatedAt)
+      .from(Students)
+      .leftJoin(Notes, eq(Students.id, Notes.studentId))
+      .groupBy(Students.id, Students.name, Students.enrollmentDate, Students.createdAt, Students.updatedAt)
       .orderBy(desc(sql`max(${Notes.createdAt})`))
 
     return ok(results as PatientWithNoteStats[])
@@ -44,10 +44,10 @@ export const getPatientsWithStats = async (c: Context<{ Variables: AppVariables 
   }
 }
 
-export const getAllPatients = async (c: Context<{ Variables: AppVariables }>): Promise<AppResult<Array<typeof Patients.$inferSelect>, PatientError>> => {
+export const getAllPatients = async (c: Context<{ Variables: AppVariables }>): Promise<AppResult<Array<typeof Students.$inferSelect>, PatientError>> => {
   const dbInstance = c.get('db')
   try {
-    const allPatients = await dbInstance.select().from(Patients).orderBy(Patients.name)
+    const allPatients = await dbInstance.select().from(Students).orderBy(Students.name)
     return ok(allPatients)
   } catch (error) {
     console.error('Error fetching all patients:', error)
@@ -55,10 +55,10 @@ export const getAllPatients = async (c: Context<{ Variables: AppVariables }>): P
   }
 }
 
-export const getRecentPatients = async (c: Context<{ Variables: AppVariables }>): Promise<AppResult<Array<typeof Patients.$inferSelect>, PatientError>> => {
+export const getRecentPatients = async (c: Context<{ Variables: AppVariables }>): Promise<AppResult<Array<typeof Students.$inferSelect>, PatientError>> => {
   const dbInstance = c.get('db')
   try {
-    const recentPatients = await dbInstance.select().from(Patients).orderBy(desc(Patients.updatedAt)).limit(5)
+    const recentPatients = await dbInstance.select().from(Students).orderBy(desc(Students.updatedAt)).limit(5)
     return ok(recentPatients)
   } catch (error) {
     console.error('Error fetching recent patients:', error)
@@ -66,10 +66,10 @@ export const getRecentPatients = async (c: Context<{ Variables: AppVariables }>)
   }
 }
 
-export const getPatientById = async (c: Context<{ Variables: AppVariables }>, id: string): Promise<AppResult<typeof Patients.$inferSelect, PatientError>> => {
+export const getPatientById = async (c: Context<{ Variables: AppVariables }>, id: string): Promise<AppResult<typeof Students.$inferSelect, PatientError>> => {
   const dbInstance = c.get('db')
   try {
-    const [patient] = await dbInstance.select().from(Patients).where(eq(Patients.id, id))
+    const [patient] = await dbInstance.select().from(Students).where(eq(Students.id, id))
 
     if (patient === undefined) {
       return err({ type: 'patient_not_found' })
@@ -87,16 +87,16 @@ type CreatePatientInput = z.infer<typeof createPatientSchema>
 export const createPatient = async (
   c: Context<{ Variables: AppVariables }>,
   patientData: CreatePatientInput
-): Promise<AppResult<typeof Patients.$inferSelect, PatientError>> => {
+): Promise<AppResult<typeof Students.$inferSelect, PatientError>> => {
   const dbInstance = c.get('db')
 
   try {
     const now = new Date()
     const [newPatient] = await dbInstance
-      .insert(Patients)
+      .insert(Students)
       .values({
         name: patientData.name.trim(),
-        dateOfBirth: new Date(patientData.dateOfBirth),
+        enrollmentDate: new Date(patientData.enrollmentDate),
         createdAt: now,
         updatedAt: now
       })
@@ -119,11 +119,11 @@ export const updatePatient = async (
   c: Context<{ Variables: AppVariables }>,
   id: string,
   updateData: UpdatePatientInput
-): Promise<AppResult<typeof Patients.$inferSelect, PatientError>> => {
+): Promise<AppResult<typeof Students.$inferSelect, PatientError>> => {
   const dbInstance = c.get('db')
 
   try {
-    const patientCheck = await dbInstance.select({ id: Patients.id }).from(Patients).where(eq(Patients.id, id))
+    const patientCheck = await dbInstance.select({ id: Students.id }).from(Students).where(eq(Students.id, id))
 
     if (patientCheck.length === 0) {
       return err({ type: 'patient_not_found' })
@@ -131,9 +131,9 @@ export const updatePatient = async (
 
     const updateValues: any = { updatedAt: new Date() }
     if (updateData.name) updateValues.name = updateData.name.trim()
-    if (updateData.dateOfBirth) updateValues.dateOfBirth = new Date(updateData.dateOfBirth)
+    if (updateData.enrollmentDate) updateValues.enrollmentDate = new Date(updateData.enrollmentDate)
 
-    const [updatedPatient] = await dbInstance.update(Patients).set(updateValues).where(eq(Patients.id, id)).returning()
+    const [updatedPatient] = await dbInstance.update(Students).set(updateValues).where(eq(Students.id, id)).returning()
 
     if (!updatedPatient) {
       return err({ type: 'patient_not_found' })
@@ -150,13 +150,13 @@ export const deletePatient = async (c: Context<{ Variables: AppVariables }>, id:
   const dbInstance = c.get('db')
 
   try {
-    const patientCheck = await dbInstance.select({ id: Patients.id }).from(Patients).where(eq(Patients.id, id))
+    const patientCheck = await dbInstance.select({ id: Students.id }).from(Students).where(eq(Students.id, id))
 
     if (patientCheck.length === 0) {
       return err({ type: 'patient_not_found' })
     }
 
-    await dbInstance.delete(Patients).where(eq(Patients.id, id))
+    await dbInstance.delete(Students).where(eq(Students.id, id))
 
     return ok(undefined)
   } catch (error) {
