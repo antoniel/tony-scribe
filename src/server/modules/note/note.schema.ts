@@ -17,7 +17,7 @@ export const updateNoteSchema = createNoteSchema.omit({ studentId: true }).parti
 
 export const noteIdParamSchema = z.object({ id: z.string() })
 
-export const patientIdQuerySchema = z.object({ studentId: z.string().optional() })
+export const patientIdQuerySchema = z.object({ patientId: z.string().optional() })
 
 export const selectNoteSchema = createSelectSchema(Notes)
 

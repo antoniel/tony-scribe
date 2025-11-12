@@ -32,7 +32,7 @@ function NoteDetailPageContent() {
   }
 
   const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this note?')) {
+    if (confirm('Tem certeza que deseja excluir esta nota?')) {
       deleteNote.mutate(noteId, {
         onSuccess: () => navigate({ to: '/patients/$patientId/notes', params: { patientId } })
       })
@@ -45,8 +45,8 @@ function NoteDetailPageContent() {
         console.log('Transcription completed successfully')
       },
       onError: (error) => {
-        const errorMessage = error instanceof Error ? error.message : 'An error occurred during transcription.'
-        alert(`Transcription failed: ${errorMessage}`)
+        const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro durante a transcrição.'
+        alert(`Transcrição falhou: ${errorMessage}`)
       }
     })
   }
@@ -104,14 +104,14 @@ function NoteDetailPageContent() {
         })
 
         if (!response.ok && data.error) {
-          alert(`Audio uploaded successfully, but transcription failed: ${data.message || data.error}`)
+          alert(`Áudio enviado com sucesso, mas a transcrição falhou: ${data.message || data.error}`)
         }
       } else if (!response.ok) {
-        throw new Error(data.error || 'Failed to upload audio')
+        throw new Error(data.error || 'Falha ao enviar áudio')
       }
     } catch (error) {
       console.error('Error uploading audio:', error)
-      alert(error instanceof Error ? error.message : 'Failed to upload audio')
+      alert(error instanceof Error ? error.message : 'Falha ao enviar áudio')
     } finally {
       setIsUploadingAudio(false)
     }
@@ -132,7 +132,7 @@ function NoteDetailPageContent() {
   }
 
   const showTranscribeButton = note && note.transcriptionStatus !== 'completed' && note.audioPath
-  const transcribeButtonText = note?.transcriptionStatus === 'failed' ? 'Retry Transcription' : 'Transcribe Audio'
+  const transcribeButtonText = note?.transcriptionStatus === 'failed' ? 'Tentar Transcrição Novamente' : 'Transcrever Áudio'
   const hasContent = note && (note.transcriptionText?.trim() || note.rawContent?.trim())
   const showGenerateSummaryButton = !!hasContent
 
@@ -148,7 +148,7 @@ function NoteDetailPageContent() {
     return (
       <div className="min-h-screen bg-background">
         <main className="max-w-7xl mx-auto px-6 py-8">
-          <div className="text-destructive">Error loading note: {error?.message || 'Note not found'}</div>
+          <div className="text-destructive">Erro ao carregar nota: {error?.message || 'Nota não encontrada'}</div>
         </main>
       </div>
     )
@@ -160,7 +160,7 @@ function NoteDetailPageContent() {
         <div className="mb-6">
           <Button variant="ghost" size="sm" onClick={() => navigate({ to: '/patients/$patientId/notes', params: { patientId } })}>
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to {patient?.name}'s Notes
+            Voltar às Notas de {patient?.name}
           </Button>
         </div>
 
@@ -190,12 +190,12 @@ function NoteDetailPageContent() {
                         {isGenerating ? (
                           <>
                             <Loader className="w-4 h-4 mr-2 animate-spin" />
-                            Generating...
+                            Gerando...
                           </>
                         ) : (
                           <>
                             <FileText className="w-4 h-4 mr-2" />
-                            Generate Summary
+                            Gerar Resumo
                           </>
                         )}
                       </Button>
