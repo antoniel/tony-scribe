@@ -1,6 +1,6 @@
 import { desc, eq } from 'drizzle-orm'
 import type { Context } from 'hono'
-import { Notes, Patients } from '../../database/schema'
+import { Notes, Students } from '../../database/schema'
 import type { AppResult } from '../../result'
 import { err, ok } from '../../result'
 import { formatSoapAsText, generateSoapSummary, generateSummary, type SummaryTemplate } from '../../services/ai.service'
@@ -24,14 +24,14 @@ type NoteError =
 
 export const getAllNotes = async (
   c: Context<{ Variables: AppVariables }>
-): Promise<AppResult<(typeof Notes.$inferSelect & { patientName: string })[], NoteError>> => {
+): Promise<AppResult<(typeof Notes.$inferSelect & { studentName: string })[], NoteError>> => {
   const dbInstance = c.get('db')
   try {
     const allNotes = await dbInstance
       .select({
         id: Notes.id,
         name: Notes.name,
-        patientId: Notes.patientId,
+        studentId: Notes.studentId,
         rawContent: Notes.rawContent,
         transcriptionText: Notes.transcriptionText,
         aiSummary: Notes.aiSummary,
@@ -39,10 +39,10 @@ export const getAllNotes = async (
         transcriptionStatus: Notes.transcriptionStatus,
         createdAt: Notes.createdAt,
         updatedAt: Notes.updatedAt,
-        patientName: Patients.name
+        studentName: Students.name
       })
       .from(Notes)
-      .innerJoin(Patients, eq(Notes.patientId, Patients.id))
+      .innerJoin(Students, eq(Notes.studentId, Students.id))
       .orderBy(desc(Notes.createdAt))
 
     return ok(allNotes as any)
@@ -54,14 +54,14 @@ export const getAllNotes = async (
 
 export const getRecentNotes = async (
   c: Context<{ Variables: AppVariables }>
-): Promise<AppResult<(typeof Notes.$inferSelect & { patientName: string })[], NoteError>> => {
+): Promise<AppResult<(typeof Notes.$inferSelect & { studentName: string })[], NoteError>> => {
   const dbInstance = c.get('db')
   try {
     const recentNotes = await dbInstance
       .select({
         id: Notes.id,
         name: Notes.name,
-        patientId: Notes.patientId,
+        studentId: Notes.studentId,
         rawContent: Notes.rawContent,
         transcriptionText: Notes.transcriptionText,
         aiSummary: Notes.aiSummary,
@@ -69,10 +69,10 @@ export const getRecentNotes = async (
         transcriptionStatus: Notes.transcriptionStatus,
         createdAt: Notes.createdAt,
         updatedAt: Notes.updatedAt,
-        patientName: Patients.name
+        studentName: Students.name
       })
       .from(Notes)
-      .innerJoin(Patients, eq(Notes.patientId, Patients.id))
+      .innerJoin(Students, eq(Notes.studentId, Students.id))
       .orderBy(desc(Notes.createdAt))
       .limit(5)
 
@@ -85,21 +85,21 @@ export const getRecentNotes = async (
 
 export const getNotesByPatientId = async (
   c: Context<{ Variables: AppVariables }>,
-  patientId: string
+  studentId: string
 ): Promise<AppResult<(typeof Notes.$inferSelect)[], NoteError>> => {
   const dbInstance = c.get('db')
   try {
-    const [patient] = await dbInstance.select({ id: Patients.id }).from(Patients).where(eq(Patients.id, patientId))
+    const [patient] = await dbInstance.select({ id: Students.id }).from(Students).where(eq(Students.id, studentId))
 
     if (!patient) {
       return err({ type: 'patient_not_found' })
     }
 
-    const patientNotes = await dbInstance.select().from(Notes).where(eq(Notes.patientId, patientId)).orderBy(desc(Notes.createdAt))
+    const patientNotes = await dbInstance.select().from(Notes).where(eq(Notes.studentId, studentId)).orderBy(desc(Notes.createdAt))
 
     return ok(patientNotes)
   } catch (error) {
-    console.error(`Error fetching notes for patient ${patientId}:`, error)
+    console.error(`Error fetching notes for patient ${studentId}:`, error)
     return err({ type: 'database_error', error })
   }
 }
@@ -107,14 +107,14 @@ export const getNotesByPatientId = async (
 export const getNoteById = async (
   c: Context<{ Variables: AppVariables }>,
   id: string
-): Promise<AppResult<typeof Notes.$inferSelect & { patientName: string; patientDOB: Date }, NoteError>> => {
+): Promise<AppResult<typeof Notes.$inferSelect & { studentName: string; patientDOB: Date }, NoteError>> => {
   const dbInstance = c.get('db')
   try {
     const [note] = await dbInstance
       .select({
         id: Notes.id,
         name: Notes.name,
-        patientId: Notes.patientId,
+        studentId: Notes.studentId,
         rawContent: Notes.rawContent,
         transcriptionText: Notes.transcriptionText,
         aiSummary: Notes.aiSummary,
@@ -122,11 +122,11 @@ export const getNoteById = async (
         transcriptionStatus: Notes.transcriptionStatus,
         createdAt: Notes.createdAt,
         updatedAt: Notes.updatedAt,
-        patientName: Patients.name,
-        patientDOB: Patients.dateOfBirth
+        studentName: Students.name,
+        patientDOB: Students.enrollmentDate
       })
       .from(Notes)
-      .innerJoin(Patients, eq(Notes.patientId, Patients.id))
+      .innerJoin(Students, eq(Notes.studentId, Students.id))
       .where(eq(Notes.id, id))
 
     if (!note) {
@@ -147,7 +147,7 @@ export const createNote = async (
   const dbInstance = c.get('db')
 
   try {
-    const [patient] = await dbInstance.select({ id: Patients.id, name: Patients.name }).from(Patients).where(eq(Patients.id, noteData.patientId))
+    const [patient] = await dbInstance.select({ id: Students.id, name: Students.name }).from(Students).where(eq(Students.id, noteData.studentId))
 
     if (!patient) {
       return err({ type: 'patient_not_found' })
@@ -171,7 +171,7 @@ export const createNote = async (
       .insert(Notes)
       .values({
         name: noteData.name || defaultName,
-        patientId: noteData.patientId,
+        studentId: noteData.studentId,
         rawContent: noteData.rawContent.trim(),
         transcriptionText: noteData.transcriptionText ? noteData.transcriptionText.trim() : null,
         aiSummary: aiSummary ? aiSummary.trim() : null,

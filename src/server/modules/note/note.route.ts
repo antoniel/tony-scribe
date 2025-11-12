@@ -8,11 +8,11 @@ import * as noteSchema from './note.schema'
 import * as noteService from './note.service'
 
 export const noteRoutes = new Hono<{ Variables: AppVariables }>()
-  .get('/', zValidator('query', noteSchema.patientIdQuerySchema), async (c) => {
-    const { patientId } = c.req.valid('query')
+  .get('/', zValidator('query', noteSchema.studentIdQuerySchema), async (c) => {
+    const { studentId } = c.req.valid('query')
 
-    if (patientId) {
-      const result = await noteService.getNotesByPatientId(c, patientId)
+    if (studentId) {
+      const result = await noteService.getNotesByPatientId(c, studentId)
       if (!result.ok) {
         throw match(result.error)
           .with({ type: 'patient_not_found' }, () => new Error('Patient not found'))

@@ -4,7 +4,7 @@ import { customAlphabet } from 'nanoid'
 const nanoid = customAlphabet('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz', 16)
 
 const prefixes = {
-  patient: 'pat',
+  student: 'stu',
   note: 'not'
 } as const
 
@@ -24,10 +24,10 @@ export function newId(prefix: keyof typeof prefixes): string {
   return [prefixes[prefix], nanoid()].join('_')
 }
 
-export const Patients = pgTable('patients', {
-  ...defaultColumn('patient'),
+export const Students = pgTable('students', {
+  ...defaultColumn('student'),
   name: varchar('name', { length: 255 }).notNull(),
-  dateOfBirth: timestamp('date_of_birth').notNull()
+  enrollmentDate: timestamp('enrollment_date').notNull()
 })
 
 export const transcriptionSourceEnum = pgEnum('transcription_source', ['text', 'audio'])
@@ -38,9 +38,9 @@ export const Notes = pgTable(
   {
     ...defaultColumn('note'),
     name: varchar('name', { length: 255 }),
-    patientId: text('patient_id')
+    studentId: text('student_id')
       .notNull()
-      .references(() => Patients.id, { onDelete: 'cascade' }),
+      .references(() => Students.id, { onDelete: 'cascade' }),
     rawContent: text('raw_content').notNull(),
     transcriptionText: text('transcription_text'),
     aiSummary: text('ai_summary'),
@@ -48,6 +48,6 @@ export const Notes = pgTable(
     transcriptionStatus: transcriptionStatusEnum('transcription_status').notNull().default('pending')
   },
   (table) => ({
-    patientIdIdx: index('notes_patient_id_idx').on(table.patientId)
+    studentIdIdx: index('notes_student_id_idx').on(table.studentId)
   })
 )

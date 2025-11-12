@@ -32,7 +32,7 @@ export function PatientForm({ patientId }: PatientFormProps) {
 
     const data = {
       name: formData.get('name') as string,
-      dateOfBirth: formData.get('dateOfBirth') as string
+      enrollmentDate: formData.get('enrollmentDate') as string
     }
 
     if (isEditMode) {
@@ -45,7 +45,7 @@ export function PatientForm({ patientId }: PatientFormProps) {
     <div className="container mx-auto py-8 max-w-2xl">
       <Card>
         <CardHeader>
-          <CardTitle>{isEditMode ? 'Edit Patient' : 'Create Patient'}</CardTitle>
+          <CardTitle>{isEditMode ? 'Editar Estudante' : 'Criar Estudante'}</CardTitle>
         </CardHeader>
         <CardPanel>
           {isLoadingPatient ? (
@@ -55,24 +55,24 @@ export function PatientForm({ patientId }: PatientFormProps) {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <Field>
-                <FieldLabel htmlFor="name">Patient Name</FieldLabel>
+                <FieldLabel htmlFor="name">Nome do Estudante</FieldLabel>
                 <FieldControl
                   id="name"
                   name="name"
                   type="text"
-                  placeholder="Enter patient name"
+                  placeholder="Digite o nome do estudante"
                   defaultValue={isEditMode ? existingPatient?.name : ''}
                   required
                 />
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="dateOfBirth">Date of Birth</FieldLabel>
+                <FieldLabel htmlFor="enrollmentDate">Data de Matrícula</FieldLabel>
                 <FieldControl
-                  id="dateOfBirth"
-                  name="dateOfBirth"
+                  id="enrollmentDate"
+                  name="enrollmentDate"
                   type="date"
-                  defaultValue={isEditMode && existingPatient?.dateOfBirth ? existingPatient.dateOfBirth.split('T')[0] : ''}
+                  defaultValue={isEditMode && existingPatient?.enrollmentDate ? existingPatient.enrollmentDate.split('T')[0] : ''}
                   required
                 />
               </Field>
@@ -81,11 +81,11 @@ export function PatientForm({ patientId }: PatientFormProps) {
 
               <div className="flex gap-3 justify-end">
                 <Button type="button" variant="outline" onClick={() => navigate({ to: '/patients' })} disabled={isPending}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={isPending}>
                   {isPending && <Loader className="w-4 h-4 mr-2 animate-spin" />}
-                  {isEditMode ? 'Update' : 'Create'} Patient
+                  {isEditMode ? 'Atualizar' : 'Criar'} Estudante
                 </Button>
               </div>
             </form>

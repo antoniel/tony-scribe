@@ -19,19 +19,19 @@ function PatientsPage() {
     <div className="container mx-auto py-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Patients</h1>
-          <p className="text-muted-foreground mt-2">Manage and view patient records</p>
+          <h1 className="text-3xl font-bold">Estudantes</h1>
+          <p className="text-muted-foreground mt-2">Gerencie e visualize registros de estudantes</p>
         </div>
         <Button onClick={() => navigate({ to: '/patients/new' })}>
           <Plus className="w-4 h-4 mr-2" />
-          New Patient
+          Novo Estudante
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Patient List</CardTitle>
-          <CardDescription>All registered patients in the system</CardDescription>
+          <CardTitle>Lista de Estudantes</CardTitle>
+          <CardDescription>Todos os estudantes registrados no sistema</CardDescription>
         </CardHeader>
         <CardPanel>
           {isLoading ? (
@@ -44,13 +44,13 @@ function PatientsPage() {
                 <EmptyMedia variant="icon">
                   <Users />
                 </EmptyMedia>
-                <EmptyTitle>No patients registered</EmptyTitle>
-                <EmptyDescription>Create your first patient to start managing records.</EmptyDescription>
+                <EmptyTitle>Nenhum estudante registrado</EmptyTitle>
+                <EmptyDescription>Crie seu primeiro estudante para começar a gerenciar registros.</EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
                 <Button onClick={() => navigate({ to: '/patients/new' })} size="sm">
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Patient
+                  Adicionar Estudante
                 </Button>
               </EmptyContent>
             </Empty>
@@ -58,11 +58,11 @@ function PatientsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Patient ID</TableHead>
-                  <TableHead>Date of Birth</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>ID do Estudante</TableHead>
+                  <TableHead>Data de Matrícula</TableHead>
+                  <TableHead>Criado em</TableHead>
+                  <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -70,11 +70,11 @@ function PatientsPage() {
                   <TableRow key={patient.id}>
                     <TableCell className="font-medium">{patient.name}</TableCell>
                     <TableCell>{patient.id}</TableCell>
-                    <TableCell>{formatDate(patient.dateOfBirth)}</TableCell>
+                    <TableCell>{formatDate(patient.enrollmentDate)}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">{formatDate(patient.createdAt, 'short')}</TableCell>
                     <TableCell className="text-right">
                       <Link to={'/patients/$patientId'} params={{ patientId: patient.id }} className="text-primary hover:underline text-sm">
-                        View
+                        Ver
                       </Link>
                     </TableCell>
                   </TableRow>

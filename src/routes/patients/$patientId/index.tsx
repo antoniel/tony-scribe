@@ -57,7 +57,7 @@ function PatientDetailPage() {
               <CardTitle>{patient.name}</CardTitle>
               <CardDescription className="mt-2">
                 <div>ID: {patient.id}</div>
-                <div>DOB: {formatDate(patient.dateOfBirth)}</div>
+                <div>DOB: {formatDate(patient.enrollmentDate)}</div>
               </CardDescription>
             </div>
             <div className="flex gap-2">
