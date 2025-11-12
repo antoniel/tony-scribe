@@ -7,22 +7,22 @@ import { useEffect, useRef, useState } from 'react'
 
 interface AudioRecorderProps {
   onAudioFile?: (file: File) => void
-  onTranscription?: (text: string) => void
-  onAudioDelete?: () => void
+  onTranscrição?: (text: string) => void
+  onAudioDeletar?: () => void
   disabled?: boolean
   isUploading?: boolean
   audioPath?: string
   noCard?: boolean
 }
 
-export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, onAudioDelete, noCard = false }: AudioRecorderProps) {
+export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, onAudioDeletar, noCard = false }: AudioRecorderProps) {
   const [isRecording, setIsRecording] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [recordingDuration, setRecordingDuration] = useState(0)
   const [selectedDevice, setSelectedDevice] = useState('')
   const [isMuted, setIsMuted] = useState(false)
-  const [isLoadingAudio, setIsLoadingAudio] = useState(false)
+  const [isCarregandoAudio, setIsCarregandoAudio] = useState(false)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -42,7 +42,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
   }, [audioUrl])
 
   useEffect(() => {
-    if (audioPath && !isLoadingAudio) {
+    if (audioPath && !isCarregandoAudio) {
       const audioPathChanged = previousAudioPathRef.current !== audioPath
 
       const hasLocalBlob = audioUrl && audioUrl.startsWith('blob:')
@@ -50,7 +50,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
       if (shouldLoad) {
         previousAudioPathRef.current = audioPath
-        setIsLoadingAudio(true)
+        setIsCarregandoAudio(true)
         const loadAudioFromPath = async () => {
           try {
             if (audioUrl) {
@@ -71,15 +71,15 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
                 const file = new File([], fileName, { type: 'audio/webm' })
                 setSelectedFile(file)
               } else {
-                console.error('Failed to get signed URL:', data.error)
+                console.error('Falhou to get signed URL:', data.error)
               }
             } else {
-              console.error('Failed to load audio:', response.statusText)
+              console.error('Falhou to load audio:', response.statusText)
             }
           } catch (error) {
             console.error('Error loading audio from path:', error)
           } finally {
-            setIsLoadingAudio(false)
+            setIsCarregandoAudio(false)
           }
         }
         loadAudioFromPath()
@@ -105,7 +105,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: selectedDevice ? { exact: selectedDevice } : undefined,
-          echoCancellation: true,
+          echoCancelarlation: true,
           noiseSuppression: true,
           autoGainControl: true
         }
@@ -135,7 +135,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
       mediaRecorder.onstop = () => {
         if (chunksRef.current.length === 0) {
-          console.warn('No audio data recorded')
+          console.warn('Sem áudio data recorded')
           return
         }
 
@@ -200,8 +200,8 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
     setSelectedFile(null)
     setRecordingDuration(0)
 
-    if (audioPath && onAudioDelete) {
-      onAudioDelete()
+    if (audioPath && onAudioDeletar) {
+      onAudioDeletar()
     }
   }
 
@@ -211,18 +211,18 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  const hasSavedAudio = !!audioPath && !!audioUrl
+  const hasSalvardAudio = !!audioPath && !!audioUrl
 
   const content = (
     <div className="space-y-6">
-      {isUploading || isLoadingAudio ? (
+      {isUploading || isCarregandoAudio ? (
         <div className="flex items-center justify-center gap-2 p-4 bg-muted/30 rounded-lg border border-border">
           <Loader className="w-5 h-5 animate-spin text-accent" />
-          <span className="text-sm text-foreground">{isUploading ? 'Uploading audio...' : 'Loading audio...'}</span>
+          <span className="text-sm text-foreground">{isUploading ? 'Uploading audio...' : 'Carregando audio...'}</span>
         </div>
       ) : (
         <>
-          {hasSavedAudio ? (
+          {hasSalvardAudio ? (
             <AudioPlayback audioUrl={audioUrl} fileName={selectedFile?.name} onClear={clearRecording} />
           ) : (
             <>
@@ -240,7 +240,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
               {audioUrl && <AudioPlayback audioUrl={audioUrl} fileName={selectedFile?.name} onClear={clearRecording} />}
 
-              <FileUploadSection disabled={disabled || isRecording || isUploading || isLoadingAudio} onFileUpload={handleFileUpload} />
+              <FileUploadSection disabled={disabled || isRecording || isUploading || isCarregandoAudio} onFileUpload={handleFileUpload} />
             </>
           )}
         </>
@@ -255,7 +255,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Audio Recording</CardTitle>
+        <CardTitle>Gravação de Áudio</CardTitle>
       </CardHeader>
       <CardPanel className="space-y-6">{content}</CardPanel>
     </Card>
@@ -282,12 +282,12 @@ function RecordingInterface({
           {isRecording ? (
             <Button type="button" onClick={onStop} size="lg" variant="destructive">
               <Square className="w-5 h-5 mr-2 fill-current" />
-              Stop Recording
+              Parar Gravação
             </Button>
           ) : (
             <Button type="button" onClick={onStart} size="lg" variant="default">
               <Mic className="w-5 h-5 mr-2" />
-              Start Recording
+              Iniciar Gravação
             </Button>
           )}
         </div>

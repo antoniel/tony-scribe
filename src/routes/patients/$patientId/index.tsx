@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useDeletePatient, useNotes, usePatient } from '@/hooks'
 import { formatDate, formatDateTime } from '@/lib/date-utils'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Edit, Loader, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, BookOpen, Edit, FileText, Loader, Plus, Sparkles, Trash2 } from 'lucide-react'
 
 export const Route = createFileRoute('/patients/$patientId/')({
   component: PatientDetailPage
@@ -18,7 +18,7 @@ function PatientDetailPage() {
   const deletePatient = useDeletePatient()
 
   const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this patient?')) {
+    if (confirm('Tem certeza que deseja deletar este estudo? Esta ação não pode ser desfeita.')) {
       deletePatient.mutate(patientId, {
         onSuccess: () => navigate({ to: '/patients' })
       })
@@ -27,96 +27,144 @@ function PatientDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-950 via-green-950/20 to-slate-950">
+        <Loader className="w-8 h-8 animate-spin text-emerald-400" />
       </div>
     )
   }
 
   if (error || !patient) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="bg-destructive/10 text-destructive px-4 py-3 rounded-lg">Error loading patient: {error?.message || 'Patient not found'}</div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-green-950/20 to-slate-950">
+        <div className="container mx-auto py-8 px-6">
+          <div className="bg-red-500/10 text-red-400 px-6 py-4 rounded-lg border border-red-500/20">
+            Erro ao carregar estudo: {error?.message || 'Estudo não encontrado'}
+          </div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: '/patients' })}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
-        </Button>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle>{patient.name}</CardTitle>
-              <CardDescription className="mt-2">
-                <div>ID: {patient.id}</div>
-                <div>DOB: {formatDate(patient.dateOfBirth)}</div>
-              </CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => navigate({ to: `/patients/${patientId}/edit` })}>
-                <Edit className="w-4 h-4 mr-2" />
-                Edit
-              </Button>
-              <Button variant="destructive" size="sm" onClick={handleDelete} disabled={deletePatient.isPending}>
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Patient Notes</h2>
-          <p className="text-muted-foreground mt-2">Clinical notes for this patient</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-green-950/20 to-slate-950">
+      <div className="container mx-auto py-8 space-y-6 px-6">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigate({ to: '/patients' })}
+            className="border-slate-700/50 text-slate-300 hover:bg-slate-800/50"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Voltar
+          </Button>
         </div>
-        <Button onClick={() => navigate({ to: '/patients/$patientId/notes', params: { patientId } })}>
-          <Plus className="w-4 h-4 mr-2" />
-          View Notes
-        </Button>
-      </div>
 
-      <Card>
-        <CardPanel>
-          {!notes || notes.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>No notes found for this patient.</p>
+        <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
+          <CardHeader className="border-b border-slate-700/50">
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                  <BookOpen className="w-8 h-8 text-emerald-400" />
+                  {patient.name}
+                </CardTitle>
+                <CardDescription className="mt-3 space-y-1 text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-emerald-400">ID:</span>
+                    <span className="font-mono text-sm">{patient.id.slice(0, 16)}...</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-emerald-400">Início:</span>
+                    <span className="text-sm">{formatDate(patient.dateOfBirth)}</span>
+                  </div>
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => navigate({ to: `/patients/${patientId}/edit` })}
+                  className="border-slate-700/50 text-slate-300 hover:bg-slate-800/50"
+                >
+                  <Edit className="w-4 h-4 mr-2" />
+                  Editar
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  size="sm" 
+                  onClick={handleDelete} 
+                  disabled={deletePatient.isPending}
+                  className="bg-red-500/20 text-red-400 hover:bg-red-500/30 border-red-500/30"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Deletar
+                </Button>
+              </div>
             </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Preview</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {notes.map((note) => (
-                  <TableRow key={note.id}>
-                    <TableCell className="text-sm">{formatDateTime(note.createdAt)}</TableCell>
-                    <TableCell className="max-w-xs truncate text-sm">{note.rawContent.substring(0, 80)}...</TableCell>
-                    <TableCell className="text-right">
-                      <Link to="/patients/$patientId/notes/$noteId" params={{ patientId, noteId: note.id }} className="text-primary hover:underline text-sm">
-                        View
-                      </Link>
-                    </TableCell>
+          </CardHeader>
+        </Card>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+              <FileText className="w-7 h-7 text-emerald-400" />
+              Notas do Estudo
+            </h2>
+            <p className="text-slate-400 mt-2">Todas as anotações e gravações deste estudo</p>
+          </div>
+          <Button 
+            onClick={() => navigate({ to: '/patients/$patientId/notes', params: { patientId } })}
+            className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 shadow-lg shadow-emerald-500/50"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Ver Todas as Notas
+          </Button>
+        </div>
+
+        <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
+          <CardPanel>
+            {!notes || notes.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 mb-4">
+                  <Sparkles className="w-12 h-12 text-emerald-400" />
+                </div>
+                <p className="text-slate-300 text-lg">Nenhuma nota encontrada para este estudo.</p>
+                <p className="text-slate-400 text-sm mt-2">Comece criando sua primeira nota!</p>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-slate-700/50 hover:bg-slate-800/50">
+                    <TableHead className="text-emerald-300">Data</TableHead>
+                    <TableHead className="text-emerald-300">Prévia</TableHead>
+                    <TableHead className="text-right text-emerald-300">Ações</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </CardPanel>
-      </Card>
+                </TableHeader>
+                <TableBody>
+                  {notes.map((note) => (
+                    <TableRow 
+                      key={note.id}
+                      className="border-slate-700/50 hover:bg-slate-800/50 transition-colors"
+                    >
+                      <TableCell className="text-sm text-slate-300">{formatDateTime(note.createdAt)}</TableCell>
+                      <TableCell className="max-w-xs truncate text-sm text-slate-400">{note.rawContent.substring(0, 80)}...</TableCell>
+                      <TableCell className="text-right">
+                        <Link 
+                          to="/patients/$patientId/notes/$noteId" 
+                          params={{ patientId, noteId: note.id }} 
+                          className="text-emerald-400 hover:text-emerald-300 hover:underline text-sm font-medium transition-colors"
+                        >
+                          Visualizar
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardPanel>
+        </Card>
+      </div>
     </div>
   )
 }

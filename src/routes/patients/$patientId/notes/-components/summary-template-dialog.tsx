@@ -5,7 +5,7 @@ import { SUMMARY_TEMPLATES, type SummaryTemplateId } from '@/lib/summary-templat
 import { Loader } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-interface SummaryTemplateDialogProps {
+interface ResumoTemplateDialogProps {
   onGenerate: (template: SummaryTemplateId) => void
   isGenerating: boolean
   error?: Error | null
@@ -13,7 +13,7 @@ interface SummaryTemplateDialogProps {
   onSuccess?: () => void
 }
 
-export function SummaryTemplateDialog({ onGenerate, isGenerating, error, trigger, onSuccess }: SummaryTemplateDialogProps) {
+export function ResumoTemplateDialog({ onGenerate, isGenerating, error, trigger, onSuccess }: ResumoTemplateDialogProps) {
   const [selectedTemplate, setSelectedTemplate] = useState<SummaryTemplateId>('soap')
   const [open, setOpen] = useState(false)
 
@@ -48,12 +48,12 @@ export function SummaryTemplateDialog({ onGenerate, isGenerating, error, trigger
       <DialogTrigger>{trigger}</DialogTrigger>
       <DialogPopup className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Generate Summary</DialogTitle>
+          <DialogTitle>Gerar Resumo</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Select Template</label>
+            <label className="text-sm font-medium">Selecionar Template</label>
             <Select value={selectedTemplate} onValueChange={(value) => setSelectedTemplate(value as SummaryTemplateId)}>
               <SelectTrigger>
                 <SelectValue />
@@ -77,23 +77,23 @@ export function SummaryTemplateDialog({ onGenerate, isGenerating, error, trigger
 
           {error && (
             <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
-              <p className="text-sm text-destructive">{error.message || 'Failed to generate summary'}</p>
+              <p className="text-sm text-destructive">{error.message || 'Falhou ao gerar resumo'}</p>
             </div>
           )}
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={isGenerating}>
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleGenerate} disabled={isGenerating || !selectedTemplate}>
             {isGenerating ? (
               <>
                 <Loader className="w-4 h-4 mr-2 animate-spin" />
-                Generating...
+                Gerando...
               </>
             ) : (
-              'Generate Summary'
+              'Gerar Resumo'
             )}
           </Button>
         </DialogFooter>

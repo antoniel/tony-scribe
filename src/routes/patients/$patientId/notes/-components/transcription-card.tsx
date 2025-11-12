@@ -3,13 +3,13 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Copy } from 'lucide-react'
 
-interface TranscriptionCardProps {
+interface TranscriçãoCardProps {
   transcriptionText?: string | null
   transcriptionStatus?: string | null
   onCopyToNotes?: () => void
 }
 
-export function TranscriptionCard({ transcriptionText, transcriptionStatus, onCopyToNotes }: TranscriptionCardProps) {
+export function TranscriçãoCard({ transcriptionText, transcriptionStatus, onCopyToNotes }: TranscriçãoCardProps) {
   if (!transcriptionText && !transcriptionStatus) {
     return null
   }
@@ -18,7 +18,7 @@ export function TranscriptionCard({ transcriptionText, transcriptionStatus, onCo
     <Card className="bg-slate-800/50 border-slate-700">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Transcription</CardTitle>
+          <CardTitle>Transcrição</CardTitle>
           <div className="flex items-center gap-2">
             {transcriptionStatus && (
               <Badge variant={transcriptionStatus === 'completed' ? 'success' : transcriptionStatus === 'failed' ? 'error' : 'warning'}>
@@ -28,7 +28,7 @@ export function TranscriptionCard({ transcriptionText, transcriptionStatus, onCo
             {transcriptionText && onCopyToNotes && (
               <Button type="button" variant="outline" size="sm" onClick={onCopyToNotes}>
                 <Copy className="w-4 h-4 mr-2" />
-                Copy to Notes
+                Copiar para Notas
               </Button>
             )}
           </div>
@@ -41,9 +41,9 @@ export function TranscriptionCard({ transcriptionText, transcriptionStatus, onCo
           </div>
         ) : (
           <div className="text-sm text-muted-foreground px-4 py-4">
-            {transcriptionStatus === 'pending' && 'Transcription is pending...'}
-            {transcriptionStatus === 'failed' && 'Transcription failed. Please try again.'}
-            {!transcriptionStatus && 'No transcription available yet.'}
+            {transcriptionStatus === 'pending' && 'Transcrição pendente...'}
+            {transcriptionStatus === 'failed' && 'Transcrição falhou. Por favor, tente novamente.'}
+            {!transcriptionStatus && 'Nenhuma transcrição disponível ainda.'}
           </div>
         )}
       </CardContent>

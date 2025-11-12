@@ -7,12 +7,12 @@ import { AudioRecorder } from './audio-recorder'
 interface AudioRecorderCardProps {
   audioPath?: string | null
   isUploading?: boolean
-  isPending?: boolean
+  isPendente?: boolean
   onAudioFile: (file: File) => Promise<void>
-  onAudioDelete: () => Promise<void>
+  onAudioDeletar: () => Promise<void>
 }
 
-export function AudioRecorderCard({ audioPath, isUploading = false, isPending = false, onAudioFile, onAudioDelete }: AudioRecorderCardProps) {
+export function AudioRecorderCard({ audioPath, isUploading = false, isPendente = false, onAudioFile, onAudioDeletar }: AudioRecorderCardProps) {
   const [isAudioRecorderOpen, setIsAudioRecorderOpen] = useState(!!audioPath || isUploading)
 
   return (
@@ -23,7 +23,7 @@ export function AudioRecorderCard({ audioPath, isUploading = false, isPending = 
             <div className="flex items-center justify-between cursor-pointer hover:bg-slate-700/30 transition-colors -mx-6 -my-6 px-6 py-6 rounded-t-2xl">
               <CardTitle className="flex items-center gap-2">
                 <Mic className="w-5 h-5" />
-                Audio Recording
+                Gravação de Áudio
               </CardTitle>
               <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${isAudioRecorderOpen ? 'rotate-180' : ''}`} />
             </div>
@@ -32,9 +32,9 @@ export function AudioRecorderCard({ audioPath, isUploading = false, isPending = 
         <CollapsibleContent>
           <CardContent>
             <AudioRecorder
-              disabled={isPending}
+              disabled={isPendente}
               onAudioFile={onAudioFile}
-              onAudioDelete={onAudioDelete}
+              onAudioDeletar={onAudioDeletar}
               isUploading={isUploading}
               audioPath={audioPath || undefined}
               noCard={true}

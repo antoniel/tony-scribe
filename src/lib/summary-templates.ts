@@ -9,19 +9,19 @@ export interface SummaryTemplate {
 export const SUMMARY_TEMPLATES: SummaryTemplate[] = [
   {
     id: 'soap',
-    name: 'SOAP Note',
-    description: 'Structured format with Subjective, Objective, Assessment, and Plan sections. Ideal for clinical documentation and progress tracking.'
+    name: 'Nota SOAP',
+    description: 'Formato estruturado com seções Subjetivo, Objetivo, Avaliação e Plano. Ideal para documentação acadêmica e acompanhamento de progresso.'
   },
   {
     id: 'progress',
-    name: 'Progress Note',
-    description: 'Structured format with History, Exam, Assessment, and Plan sections. Suitable for ongoing patient care documentation.'
+    name: 'Nota de Progresso',
+    description: 'Formato estruturado com seções de Histórico, Exame, Avaliação e Plano. Adequado para documentação contínua de estudos.'
   },
   {
     id: 'discharge',
-    name: 'Discharge Summary',
+    name: 'Resumo de Conclusão',
     description:
-      'Structured format with Admission Diagnosis, Hospital Course, Discharge Condition, and Discharge Instructions. Perfect for patient discharge documentation.'
+      'Formato estruturado com Diagnóstico Inicial, Desenvolvimento, Condição Final e Instruções. Perfeito para documentação de conclusão de estudos.'
   }
 ]
 

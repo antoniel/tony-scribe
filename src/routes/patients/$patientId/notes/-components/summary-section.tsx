@@ -4,56 +4,56 @@ import { Textarea } from '@/components/ui/textarea'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-interface SummarySectionProps {
+interface ResumoSectionProps {
   noteId: string
-  savedSummary?: string | null
-  generatedSummary?: string | null
+  savedResumo?: string | null
+  generatedResumo?: string | null
   isGenerating: boolean
-  onSave: (summary: string) => void
+  onSalvar: (summary: string) => void
   onRegenerate: () => void
   isSaving?: boolean
 }
 
-export function SummarySection({ savedSummary, generatedSummary, isGenerating, onSave, onRegenerate, isSaving = false }: SummarySectionProps) {
-  const [editedSummary, setEditedSummary] = useState(generatedSummary || '')
+export function ResumoSection({ savedResumo, generatedResumo, isGenerating, onSalvar, onRegenerate, isSaving = false }: ResumoSectionProps) {
+  const [editedResumo, setEditedResumo] = useState(generatedResumo || '')
 
   useEffect(() => {
-    if (generatedSummary) {
-      setEditedSummary(generatedSummary)
+    if (generatedResumo) {
+      setEditedResumo(generatedResumo)
     }
-  }, [generatedSummary])
+  }, [generatedResumo])
 
-  const handleSave = () => {
-    if (editedSummary.trim()) {
-      onSave(editedSummary.trim())
+  const handleSalvar = () => {
+    if (editedResumo.trim()) {
+      onSalvar(editedResumo.trim())
     }
   }
 
-  if (savedSummary && !generatedSummary) {
+  if (savedResumo && !generatedResumo) {
     return (
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Summary</CardTitle>
+            <CardTitle>Resumo</CardTitle>
             <Button variant="outline" size="sm" onClick={onRegenerate} disabled={isGenerating}>
-              Regenerate Summary
+              Regenerate Resumo
             </Button>
           </div>
         </CardHeader>
         <CardContent>
           <div className="prose prose-invert max-w-none min-h-[200px] px-8 py-6 bg-slate-900 rounded-lg border border-slate-700 whitespace-pre-wrap">
-            {savedSummary}
+            {savedResumo}
           </div>
         </CardContent>
       </Card>
     )
   }
 
-  if (generatedSummary || isGenerating) {
+  if (generatedResumo || isGenerating) {
     return (
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
-          <CardTitle>Summary</CardTitle>
+          <CardTitle>Resumo</CardTitle>
         </CardHeader>
         <CardContent>
           {isGenerating ? (
@@ -64,20 +64,20 @@ export function SummarySection({ savedSummary, generatedSummary, isGenerating, o
           ) : (
             <>
               <Textarea
-                value={editedSummary}
-                onChange={(e) => setEditedSummary(e.target.value)}
+                value={editedResumo}
+                onChange={(e) => setEditedResumo(e.target.value)}
                 className="min-h-[200px] font-mono text-sm bg-slate-900 border-slate-700"
                 placeholder="Generated summary will appear here..."
               />
               <div className="flex gap-2 justify-end mt-4">
-                <Button onClick={handleSave} disabled={isSaving || !editedSummary.trim()}>
+                <Button onClick={handleSalvar} disabled={isSaving || !editedResumo.trim()}>
                   {isSaving ? (
                     <>
                       <Loader className="w-4 h-4 mr-2 animate-spin" />
                       Saving...
                     </>
                   ) : (
-                    'Save Summary'
+                    'Salvar Resumo'
                   )}
                 </Button>
               </div>

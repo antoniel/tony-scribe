@@ -8,13 +8,13 @@ import { useNavigate } from '@tanstack/react-router'
 import { ChevronDown, Copy, Loader, Mic } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { AudioRecorder } from './audio-recorder'
-import { SummarySection } from './summary-section'
+import { ResumoSection } from './summary-section'
 import { TiptapEditor } from './tiptap-editor'
 
 interface NoteFormProps {
   noteId?: string
   patientId: string
-  generatedSummary?: string | null
+  generatedResumo?: string | null
   showOnlyNotes?: boolean
   editorContent?: string
   setEditorContent?: (content: string) => void
@@ -23,13 +23,13 @@ interface NoteFormProps {
 export function NoteForm({
   noteId,
   patientId,
-  generatedSummary,
+  generatedResumo,
   showOnlyNotes = false,
   editorContent: externalEditorContent,
   setEditorContent: externalSetEditorContent
 }: NoteFormProps) {
   const navigate = useNavigate()
-  const { data: existingNote, isLoading: isLoadingNote } = useNote(noteId || '')
+  const { data: existingNote, isCarregando: isCarregandoNote } = useNote(noteId || '')
   const createMutation = useCreateNote()
   const updateNoteMutation = useUpdateNote(noteId || '')
 
@@ -46,7 +46,7 @@ export function NoteForm({
       const data = await response.json()
 
       if (!response.ok && !data.audioPath) {
-        throw new Error(data.error || 'Failed to upload audio')
+        throw new Error(data.error || 'Falhou to upload audio')
       }
 
       return data
@@ -57,15 +57,15 @@ export function NoteForm({
   const [isAudioRecorderOpen, setIsAudioRecorderOpen] = useState(!!existingNote?.audioPath)
 
   const hasInitializedRef = useRef(false)
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const autoSalvarTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const isEditMode = !!noteId
   const mutation = isEditMode ? updateNoteMutation : createMutation
-  const isPending = mutation.isPending || (isEditMode && isLoadingNote)
+  const isPendente = mutation.isPendente || (isEditMode && isCarregandoNote)
   const editorContent = externalEditorContent ?? internalEditorContent
-  const showTranscriptionSection = existingNote?.transcriptionText || existingNote?.audioPath
+  const showTranscriçãoSection = existingNote?.transcriptionText || existingNote?.audioPath
   const transcriptionStatus = existingNote?.transcriptionStatus
-  const showSummarySection = existingNote?.aiSummary || generatedSummary || (existingNote && (existingNote.transcriptionText || existingNote.rawContent))
+  const showResumoSection = existingNote?.aiResumo || generatedResumo || (existingNote && (existingNote.transcriptionText || existingNote.rawContent))
   const setEditorContent = externalSetEditorContent ?? setInternalEditorContent
 
   useEffect(() => {
@@ -77,8 +77,8 @@ export function NoteForm({
   }, [isEditMode, existingNote?.rawContent])
 
   useEffect(() => {
-    setIsAudioRecorderOpen(!!existingNote?.audioPath || transcribeAudioMutation.isPending)
-  }, [existingNote?.audioPath, transcribeAudioMutation.isPending])
+    setIsAudioRecorderOpen(!!existingNote?.audioPath || transcribeAudioMutation.isPendente)
+  }, [existingNote?.audioPath, transcribeAudioMutation.isPendente])
 
   const handleCopyToNotes = () => {
     if (existingNote?.transcriptionText) {
@@ -98,18 +98,18 @@ export function NoteForm({
     }
   }
 
-  const handleSaveSummary = (summary: string) => {
+  const handleSalvarResumo = (summary: string) => {
     if (noteId) {
       updateNoteMutation.mutate({
         id: noteId,
-        aiSummary: summary
+        aiResumo: summary
       })
     }
   }
 
-  const handleRegenerateSummary = () => {}
+  const handleRegenerateResumo = () => {}
 
-  const handleAudioDelete = () => {
+  const handleAudioDeletar = () => {
     if (isEditMode && noteId) {
       updateNoteMutation.mutate({
         id: noteId,
@@ -144,7 +144,7 @@ export function NoteForm({
       },
       onError: (error) => {
         console.error('Error uploading audio:', error)
-        alert(error instanceof Error ? error.message : 'Failed to upload audio')
+        alert(error instanceof Error ? error.message : 'Falhou to upload audio')
       }
     })
   }
@@ -152,27 +152,27 @@ export function NoteForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const contentToSave = editorContent.trim()
+    const contentToSalvar = editorContent.trim()
 
     if (isEditMode) {
-      if (autoSaveTimeoutRef.current) {
-        clearTimeout(autoSaveTimeoutRef.current)
+      if (autoSalvarTimeoutRef.current) {
+        clearTimeout(autoSalvarTimeoutRef.current)
       }
       updateNoteMutation.mutate({
         id: noteId,
-        rawContent: contentToSave
+        rawContent: contentToSalvar
       })
     } else {
       createMutation.mutate({
         patientId: patientId,
-        rawContent: contentToSave
+        rawContent: contentToSalvar
       })
     }
   }
 
   return (
     <>
-      {isPending && !hasInitializedRef.current ? (
+      {isPendente && !hasInitializedRef.current ? (
         <div className="flex items-center justify-center py-12">
           <Loader className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
@@ -182,7 +182,7 @@ export function NoteForm({
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Notes</CardTitle>
-                {mutation.isPending && (
+                {mutation.isPendente && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Loader className="w-4 h-4 animate-spin" />
                     <span>Saving...</span>
@@ -191,7 +191,7 @@ export function NoteForm({
               </div>
             </CardHeader>
             <CardContent>
-              <TiptapEditor content={editorContent} onChange={setEditorContent} editable={!isPending} />
+              <TiptapEditor content={editorContent} onChange={setEditorContent} editable={!isPendente} />
             </CardContent>
           </Card>
 
@@ -199,11 +199,11 @@ export function NoteForm({
 
           {!showOnlyNotes && (
             <>
-              {showTranscriptionSection && (
+              {showTranscriçãoSection && (
                 <Card className="bg-slate-800/50 border-slate-700">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Transcription</CardTitle>
+                      <CardTitle>Transcrição</CardTitle>
                       <div className="flex items-center gap-2">
                         {transcriptionStatus && (
                           <Badge variant={transcriptionStatus === 'completed' ? 'success' : transcriptionStatus === 'failed' ? 'error' : 'warning'}>
@@ -211,7 +211,7 @@ export function NoteForm({
                           </Badge>
                         )}
                         {existingNote?.transcriptionText && (
-                          <Button type="button" variant="outline" size="sm" onClick={handleCopyToNotes} disabled={isPending}>
+                          <Button type="button" variant="outline" size="sm" onClick={handleCopyToNotes} disabled={isPendente}>
                             <Copy className="w-4 h-4 mr-2" />
                             Copy to Notes
                           </Button>
@@ -226,8 +226,8 @@ export function NoteForm({
                       </div>
                     ) : (
                       <div className="text-sm text-muted-foreground px-8 py-6">
-                        {transcriptionStatus === 'pending' && 'Transcription is pending...'}
-                        {transcriptionStatus === 'failed' && 'Transcription failed. Please try again.'}
+                        {transcriptionStatus === 'pending' && 'Transcrição is pending...'}
+                        {transcriptionStatus === 'failed' && 'Transcrição failed. Please try again.'}
                         {!transcriptionStatus && 'No transcription available yet.'}
                       </div>
                     )}
@@ -235,15 +235,15 @@ export function NoteForm({
                 </Card>
               )}
 
-              {showSummarySection && (
-                <SummarySection
+              {showResumoSection && (
+                <ResumoSection
                   noteId={noteId || ''}
-                  savedSummary={existingNote?.aiSummary}
-                  generatedSummary={generatedSummary}
+                  savedResumo={existingNote?.aiResumo}
+                  generatedResumo={generatedResumo}
                   isGenerating={false}
-                  onSave={handleSaveSummary}
-                  onRegenerate={handleRegenerateSummary}
-                  isSaving={updateNoteMutation.isPending}
+                  onSalvar={handleSalvarResumo}
+                  onRegenerate={handleRegenerateResumo}
+                  isSaving={updateNoteMutation.isPendente}
                 />
               )}
 
@@ -254,7 +254,7 @@ export function NoteForm({
                       <div className="flex items-center justify-between cursor-pointer hover:bg-slate-700/30 transition-colors -mx-6 -my-6 px-6 py-6 rounded-t-2xl">
                         <CardTitle className="flex items-center gap-2">
                           <Mic className="w-5 h-5" />
-                          Audio Recording
+                          Gravação de Áudio
                         </CardTitle>
                         <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${isAudioRecorderOpen ? 'rotate-180' : ''}`} />
                       </div>
@@ -263,10 +263,10 @@ export function NoteForm({
                   <CollapsibleContent>
                     <CardContent>
                       <AudioRecorder
-                        disabled={isPending || isEditMode}
+                        disabled={isPendente || isEditMode}
                         onAudioFile={handleAudioFile}
-                        onAudioDelete={handleAudioDelete}
-                        isUploading={transcribeAudioMutation.isPending}
+                        onAudioDeletar={handleAudioDeletar}
+                        isUploading={transcribeAudioMutation.isPendente}
                         audioPath={existingNote?.audioPath || undefined}
                         noCard={true}
                       />
@@ -284,12 +284,12 @@ export function NoteForm({
                   onClick={() => {
                     navigate({ to: '/patients/$patientId/notes', params: { patientId: patientId } })
                   }}
-                  disabled={isPending}
+                  disabled={isPendente}
                 >
-                  Cancel
+                  Cancelar
                 </Button>
-                <Button type="submit" disabled={isPending}>
-                  {isPending && <Loader className="w-4 h-4 mr-2 animate-spin" />}
+                <Button type="submit" disabled={isPendente}>
+                  {isPendente && <Loader className="w-4 h-4 mr-2 animate-spin" />}
                   {isEditMode ? 'Update' : 'Create'} Note
                 </Button>
               </div>

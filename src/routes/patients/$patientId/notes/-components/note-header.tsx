@@ -11,17 +11,17 @@ interface NoteHeaderProps {
   createdAt: string | null
   transcriptionStatus?: string | null
   onNameUpdate: (newName: string) => Promise<void>
-  onDelete: () => void
+  onDeletar: () => void
   onTranscribe?: () => void
-  onSave?: () => void
+  onSalvar?: () => void
   showTranscribeButton?: boolean
-  showGenerateSummaryButton?: boolean
-  showSaveButton?: boolean
+  showGenerateResumoButton?: boolean
+  showSalvarButton?: boolean
   transcribeButtonText?: string
   isTranscribing?: boolean
   isDeleting?: boolean
   isSaving?: boolean
-  generateSummaryTrigger?: React.ReactNode
+  generateResumoTrigger?: React.ReactNode
 }
 
 export function NoteHeader({
@@ -30,17 +30,17 @@ export function NoteHeader({
   createdAt,
   transcriptionStatus,
   onNameUpdate,
-  onDelete,
+  onDeletar,
   onTranscribe,
-  onSave,
+  onSalvar,
   showTranscribeButton = false,
-  showGenerateSummaryButton = false,
-  showSaveButton = false,
-  transcribeButtonText = 'Transcribe Audio',
+  showGenerateResumoButton = false,
+  showSalvarButton = false,
+  transcribeButtonText = 'Transcrever Áudio',
   isTranscribing = false,
   isDeleting = false,
   isSaving = false,
-  generateSummaryTrigger
+  generateResumoTrigger
 }: NoteHeaderProps) {
   return (
     <Card className="bg-slate-800/50 border-slate-700">
@@ -54,35 +54,35 @@ export function NoteHeader({
               </div>
             </div>
             <CardDescription className="text-sm text-muted-foreground space-y-1">
-              <div>Created: {createdAt ? formatDateTime(createdAt) : 'N/A'}</div>
+              <div>Criado: {createdAt ? formatDateTime(createdAt) : 'N/A'}</div>
               {transcriptionStatus && <div className="capitalize">Status: {transcriptionStatus}</div>}
             </CardDescription>
           </div>
 
           {/* Action buttons */}
           <div className="flex items-center gap-2 shrink-0">
-            {showSaveButton && onSave && (
-              <Button variant="default" size="sm" onClick={onSave} disabled={isSaving}>
+            {showSalvarButton && onSalvar && (
+              <Button variant="default" size="sm" onClick={onSalvar} disabled={isSaving}>
                 {isSaving ? (
                   <>
                     <Loader className="w-4 h-4 mr-2 animate-spin" />
-                    Saving...
+                    Salvando...
                   </>
                 ) : (
                   <>
                     <Save className="w-4 h-4 mr-2" />
-                    Save Note
+                    Salvar Nota
                   </>
                 )}
               </Button>
             )}
-            {showGenerateSummaryButton && generateSummaryTrigger}
+            {showGenerateResumoButton && generateResumoTrigger}
             {showTranscribeButton && onTranscribe && (
               <Button variant="default" size="sm" onClick={onTranscribe} disabled={isTranscribing}>
                 {isTranscribing ? (
                   <>
                     <Loader className="w-4 h-4 mr-2 animate-spin" />
-                    Transcribing...
+                    Transcrevendo...
                   </>
                 ) : (
                   <>
@@ -94,14 +94,14 @@ export function NoteHeader({
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="More options">
+                <Button variant="outline" size="sm" aria-label="Mais opções">
                   <MoreVertical className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem variant="destructive" onClick={onDelete} disabled={isDeleting}>
+                <DropdownMenuItem variant="destructive" onClick={onDeletar} disabled={isDeleting}>
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Delete Note
+                  Deletar Nota
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

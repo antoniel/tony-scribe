@@ -1,57 +1,57 @@
-import { useGenerateSummary } from '@/hooks'
+import { useGenerateResumo } from '@/hooks'
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-interface SummaryGenerationContextValue {
+interface ResumoGenerationContextValue {
   onGenerate: (template: 'soap' | 'progress' | 'discharge') => void
   isGenerating: boolean
   error: Error | null
-  generatedSummary: string | null
-  setGeneratedSummary: (summary: string | null) => void
+  generatedResumo: string | null
+  setGeneratedResumo: (summary: string | null) => void
 }
 
-const SummaryGenerationContext = createContext<SummaryGenerationContextValue | null>(null)
+const ResumoGenerationContext = createContext<ResumoGenerationContextValue | null>(null)
 
-interface SummaryGenerationProviderProps {
+interface ResumoGenerationProviderProps {
   noteId: string
   children: ReactNode
 }
 
-export function SummaryGenerationProvider({ noteId, children }: SummaryGenerationProviderProps) {
-  const generateSummary = useGenerateSummary(noteId)
-  const [generatedSummary, setGeneratedSummary] = useState<string | null>(null)
-  const [summaryError, setSummaryError] = useState<Error | null>(null)
+export function ResumoGenerationProvider({ noteId, children }: ResumoGenerationProviderProps) {
+  const generateResumo = useGenerateResumo(noteId)
+  const [generatedResumo, setGeneratedResumo] = useState<string | null>(null)
+  const [summaryError, setResumoError] = useState<Error | null>(null)
 
-  const handleGenerateSummary = async (template: 'soap' | 'progress' | 'discharge') => {
-    setSummaryError(null)
-    generateSummary.mutate(template, {
+  const handleGenerateResumo = async (template: 'soap' | 'progress' | 'discharge') => {
+    setResumoError(null)
+    generateResumo.mutate(template, {
       onSuccess: (summary) => {
-        setGeneratedSummary(summary)
+        setGeneratedResumo(summary)
       },
       onError: (error) => {
-        setSummaryError(error instanceof Error ? error : new Error('Failed to generate summary'))
+        setResumoError(error instanceof Error ? error : new Error('Falhou to generate summary'))
       }
     })
   }
 
   return (
-    <SummaryGenerationContext.Provider
+    <ResumoGenerationContext.Provider
       value={{
-        onGenerate: handleGenerateSummary,
-        isGenerating: generateSummary.isPending,
+        onGenerate: handleGenerateResumo,
+        isGenerating: generateResumo.isPendente,
         error: summaryError,
-        generatedSummary,
-        setGeneratedSummary
+        generatedResumo,
+        setGeneratedResumo
       }}
     >
       {children}
-    </SummaryGenerationContext.Provider>
+    </ResumoGenerationContext.Provider>
   )
 }
 
-export function useSummaryGeneration() {
-  const context = useContext(SummaryGenerationContext)
+export function useResumoGeneration() {
+  const context = useContext(ResumoGenerationContext)
   if (!context) {
-    throw new Error('useSummaryGeneration must be used within SummaryGenerationProvider')
+    throw new Error('useResumoGeneration must be used within ResumoGenerationProvider')
   }
   return context
 }
