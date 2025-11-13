@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 
-import { BookOpen, GraduationCap, Home, Menu, X, Sparkles } from 'lucide-react'
+import { BookOpen, GraduationCap, Home, Menu, Sparkles, X } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Header() {
@@ -11,9 +11,9 @@ export default function Header() {
       <header className="border-b border-emerald-500/20 bg-gradient-to-r from-slate-950 via-emerald-950/30 to-slate-950 shadow-lg backdrop-blur-sm">
         <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setIsOpen(true)} 
-              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-300 hover:scale-105" 
+            <button
+              onClick={() => setIsOpen(true)}
+              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-300 hover:scale-105"
               aria-label="Abrir menu"
             >
               <Menu size={24} className="text-white" />
@@ -24,9 +24,7 @@ export default function Header() {
                 <Sparkles className="w-4 h-4 text-lime-400 absolute -top-1 -right-1 animate-pulse" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-green-400 to-lime-400 bg-clip-text text-transparent">
-                  EduScribe
-                </h1>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 via-green-400 to-lime-400 bg-clip-text text-transparent">Anota.ai</h1>
                 <p className="text-xs text-slate-400 -mt-1">Notas Inteligentes</p>
               </div>
             </Link>
@@ -42,15 +40,9 @@ export default function Header() {
         <div className="flex items-center justify-between p-6 border-b border-emerald-500/20">
           <div className="flex items-center gap-2">
             <GraduationCap className="w-7 h-7 text-emerald-400" />
-            <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
-              Navegação
-            </h2>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">Navegação</h2>
           </div>
-          <button 
-            onClick={() => setIsOpen(false)} 
-            className="p-2 hover:bg-white/10 rounded-xl transition-all duration-300" 
-            aria-label="Fechar menu"
-          >
+          <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/10 rounded-xl transition-all duration-300" aria-label="Fechar menu">
             <X size={24} />
           </button>
         </div>
@@ -61,7 +53,8 @@ export default function Header() {
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-4 rounded-xl hover:bg-white/10 transition-all duration-300 group"
             activeProps={{
-              className: 'flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg shadow-emerald-500/50 transition-all duration-300'
+              className:
+                'flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg shadow-emerald-500/50 transition-all duration-300'
             }}
           >
             <Home size={22} className="group-hover:scale-110 transition-transform duration-300" />
@@ -75,7 +68,8 @@ export default function Header() {
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-4 rounded-xl hover:bg-white/10 transition-all duration-300 group"
             activeProps={{
-              className: 'flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg shadow-emerald-500/50 transition-all duration-300'
+              className:
+                'flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 shadow-lg shadow-emerald-500/50 transition-all duration-300'
             }}
           >
             <BookOpen size={22} className="group-hover:scale-110 transition-transform duration-300" />
@@ -83,15 +77,13 @@ export default function Header() {
           </Link>
 
           <div className="border-t border-emerald-500/20 my-4"></div>
-          
+
           <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 border border-emerald-500/20 mt-6">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-5 h-5 text-emerald-400" />
               <h3 className="font-semibold text-sm text-emerald-300">Dica do Dia</h3>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Use a gravação de áudio para capturar suas aulas e gere resumos automáticos com IA!
-            </p>
+            <p className="text-xs text-slate-300 leading-relaxed">Use a gravação de áudio para capturar suas aulas e gere resumos automáticos com IA!</p>
           </div>
         </nav>
       </aside>
