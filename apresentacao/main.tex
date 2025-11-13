@@ -1,0 +1,362 @@
+\documentclass[aspectratio=169,xcolor=table]{beamer}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum, lmodern}
+\usepackage{csquotes}
+\usepackage{xcolor}
+\usepackage[portuguese]{babel}
+
+% ------------------------------------------------
+% Tema e Configurações do Beamer
+% ------------------------------------------------
+\usetheme{DCC}
+
+% Ajuste de espaçamento entre itens
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setlength{\itemsep}{0.8em}
+\setlength{\parskip}{0.5em}
+
+\graphicspath{{imgs/}{./imgs/}}
+
+\author[Sousa, Antoniel; Sena, Luis Felipe; Farias, Claudio; Leahy, João]{%
+  \textbf{Antoniel} \and \textbf{Luis Sena} \and \textbf{Claudio} \and \textbf{João Leahy}
+}
+\title{Anota.ai: Seu Caderno Inteligente de Aulas}
+\subtitle{Sistema Web de Apoio ao Aprendizado - UFBA}
+\institute{Universidade Federal da Bahia \\ Instituto de Computação}
+\date{\today}
+
+\begin{document}
+
+%-------------------------------------------------
+%  SLIDE DE TÍTULO
+%-------------------------------------------------
+\begin{frame}[plain,noframenumbering]
+    \titlepage
+\end{frame}
+
+%-------------------------------------------------
+%  SLIDE DE AGENDA
+%-------------------------------------------------
+\begin{frame}{Agenda}
+    \tableofcontents
+\end{frame}
+
+\setlength{\parskip}{1em}
+
+%=================================================
+\section{Introdução}
+%=================================================
+\begin{frame}{O Problema}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item Durante aulas universitárias, é comum que alunos \textbf{percam informações importantes}
+        \item Ritmo acelerado das explicações e distrações
+        \item Materiais dispersos entre slides, Moodle e anotações pessoais
+        \item \textbf{Dificuldade de revisão} e organização do conteúdo
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Solução: Anota.ai}
+    \vspace{0.5em}
+    \begin{center}
+        \Large Uma plataforma inteligente de apoio ao aprendizado
+    \end{center}
+    
+    \vspace{1em}
+    
+    \begin{itemize}
+        \item Captura e organiza automaticamente o conteúdo das aulas
+        \item Integra gravação de áudio, slides e anotações automáticas
+        \item Utiliza Inteligência Artificial para gerar resumos e materiais de estudo
+        \item Centraliza todo o material em um caderno digital pesquisável
+    \end{itemize}
+\end{frame}
+
+%=================================================
+\section{Equipe e Documentação}
+%=================================================
+\begin{frame}{Equipe e Responsabilidades}
+    \begin{itemize}
+        \item \textbf{Antoniel}
+        \begin{itemize}
+            \item Backend (Tanstack Start + Hono), Integração com APIs de IA, Banco de Dados
+        \end{itemize}
+        
+        \item \textbf{Luis Sena}
+        \begin{itemize}
+            \item Frontend (React/Tanstack Start), Design de Interface, UX
+        \end{itemize}
+        
+        \item \textbf{Claudio}
+        \begin{itemize}
+            \item Infraestrutura, Deploy, Integração de Áudio/Transcrição
+        \end{itemize}
+        
+        \item \textbf{João Leahy}
+        \begin{itemize}
+            \item Testes, Documentação, Features de Colaboração
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Gestão de Projeto}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \textbf{Ferramenta de Gestão:} TODO.md na raiz do repositório
+        \begin{itemize}
+            \item Acompanhamento de tarefas e sprints
+            \item Registros de decisões técnicas
+            \item Checklist de features e bugs
+        \end{itemize}
+        
+        \vspace{1em}
+        
+        \item \textbf{Repositório:} GitHub (compartilhado com o professor)
+        
+        \vspace{1em}
+        
+        \item \textbf{Metodologia:} Desenvolvimento ágil com reuniões semanais
+    \end{itemize}
+\end{frame}
+
+%=================================================
+\section{Tecnologias e Framework}
+%=================================================
+\begin{frame}{Framework: React com Tanstack Start}
+    \vspace{0.5em}
+    \begin{center}
+        \Large Por que React + Tanstack Start?
+    \end{center}
+    
+    \vspace{1em}
+    
+    \begin{itemize}
+        \item \textbf{Componentes Reutilizáveis:} Facilita a manutenção e escalabilidade
+        \item \textbf{Ecossistema Rico:} Bibliotecas para roteamento, estado, UI, etc.
+        \item \textbf{Performance:} Virtual DOM otimiza atualizações da interface
+        \item \textbf{Tanstack Start:} Framework full-stack moderno com SSR e rotas dinâmicas
+        \item \textbf{Type-safe:} Tipagem end-to-end do frontend ao backend
+        \item \textbf{Comunidade Ativa:} Suporte amplo e documentação extensa
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Stack Tecnológica Completa}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Frontend}
+            \begin{itemize}
+                \item Tanstack Start (React)
+                \item TypeScript
+                \item TailwindCSS
+                \item Shadcn/ui
+                \item TipTap Editor
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \textbf{Backend}
+            \begin{itemize}
+                \item Hono (Web Framework)
+                \item PostgreSQL
+                \item Drizzle ORM
+                \item OAuth2/SSO UFBA
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    
+    \vspace{1.5em}
+    
+    \textbf{Serviços de IA}
+    \begin{itemize}
+        \item Whisper/WhisperX (Transcrição de áudio)
+        \item Google Gemini (Resumos, flashcards e questões)
+        \item OCR para extração de texto de slides
+    \end{itemize}
+\end{frame}
+
+%=================================================
+\section{Inovação e Funcionalidades}
+%=================================================
+\begin{frame}{Inovações do Anota.ai}
+    \vspace{0.5em}
+    \textbf{O que trazemos de novo?}
+    
+    \vspace{1em}
+    
+    \begin{itemize}
+        \item \textbf{Diarização de Falas:} Separa automaticamente as vozes de professor e estudantes
+        \item \textbf{Linha do Tempo Interativa:} Sincroniza áudio, slides e anotações em uma única linha
+        \item \textbf{Resumos Automáticos:} Síntese textual e geração de flashcards com IA
+        \item \textbf{Geração de Questões:} Cria perguntas objetivas e discursivas baseadas na transcrição
+        \item \textbf{Busca Semântica:} Encontra conceitos por significado, não apenas palavras-chave
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Funcionalidades Principais}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{Captura}
+            \begin{itemize}
+                \item Gravação de áudio em tempo real
+                \item Upload de slides/PDFs
+                \item OCR para extração de texto
+                \item Sincronização automática
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \textbf{Estudo}
+            \begin{itemize}
+                \item Resumos automáticos
+                \item Flashcards gerados por IA
+                \item Questões de revisão
+                \item Busca inteligente
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    
+    \vspace{1.5em}
+    
+    \textbf{Colaboração}
+    \begin{itemize}
+        \item Compartilhamento com colegas e monitores
+        \item Anotações colaborativas
+        \item Caderno digital centralizado
+    \end{itemize}
+\end{frame}
+
+%=================================================
+\section{Requisitos do Sistema}
+%=================================================
+\begin{frame}{Requisitos Funcionais}
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \textbf{RF1:} Capturar áudio em tempo real durante as aulas
+        \item \textbf{RF2:} Transcrever automaticamente usando Whisper/WhisperX
+        \item \textbf{RF3:} Extrair textos de slides e imagens via OCR
+        \item \textbf{RF4:} Associar transcrições e slides em linha do tempo única
+        \item \textbf{RF5:} Permitir busca semântica em todo o conteúdo
+        \item \textbf{RF6:} Gerar resumos automáticos e flashcards
+        \item \textbf{RF7:} Permitir compartilhamento com monitores e colegas
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Requisitos Não Funcionais e Regras de Negócio}
+    \vspace{0.5em}
+    \textbf{Requisitos Não Funcionais}
+    \begin{itemize}
+        \item \textbf{RNF1:} Funcionar em modo offline (conexão instável)
+        \item \textbf{RNF2:} Garantir respostas em até 3 segundos
+        \item \textbf{RNF3:} Segurança e privacidade dos dados de aula
+        \item \textbf{RNF4:} Autenticação via SSO/UFBA
+    \end{itemize}
+    
+    \vspace{1em}
+    
+    \textbf{Regras de Negócio}
+    \begin{itemize}
+        \item Apenas usuários autenticados (UFBA) podem acessar
+        \item Monitores têm permissões de moderação
+        \item Professores podem compartilhar materiais diretamente
+    \end{itemize}
+\end{frame}
+
+%=================================================
+\section{Entregas e Demonstração}
+%=================================================
+\begin{frame}{Requisitos de Entrega}
+    \vspace{0.5em}
+    \begin{enumerate}
+        \item \textbf{Documentação Mínima do Sistema}
+        \begin{itemize}
+            \item TODO.md na raiz do repositório para gestão de tarefas
+            \item Funções e responsabilidades de cada integrante
+        \end{itemize}
+        
+        \vspace{0.5em}
+        
+        \item \textbf{Entrega do Protótipo do Sistema}
+        \begin{itemize}
+            \item Sistema funcional hospedado
+            \item Código-fonte no GitHub
+        \end{itemize}
+        
+        \vspace{0.5em}
+        
+        \item \textbf{Apresentação do Front-end}
+        \begin{itemize}
+            \item Interface desenvolvida em React/Tanstack Start
+        \end{itemize}
+        
+        \vspace{0.5em}
+        
+        \item \textbf{Demonstração Prática do Framework}
+        \begin{itemize}
+            \item Exemplos de componentes React e hooks
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Demonstração Prática: React com Tanstack Start}
+    \vspace{0.5em}
+    \textbf{Exemplo de Componentes e Features}
+    
+    \vspace{0.5em}
+    
+    \begin{itemize}
+        \item \textbf{Editor de Anotações:} Componente TipTap integrado
+        \item \textbf{Player de Áudio:} Controle de reprodução sincronizado
+        \item \textbf{Linha do Tempo:} Visualização interativa de tópicos
+        \item \textbf{Hooks Customizados:}
+        \begin{itemize}
+            \item \texttt{useNote()} - Gerenciamento de anotações
+            \item \texttt{usePatient()} - Controle de pacientes/aulas
+            \item \texttt{useStats()} - Estatísticas de uso
+        \end{itemize}
+        \item \textbf{API Routes:} Rotas type-safe com Hono
+    \end{itemize}
+    
+    \vspace{0.5em}
+    
+    \textbf{Demonstração ao vivo durante a apresentação}
+\end{frame}
+
+%=================================================
+\section{Conclusão}
+%=================================================
+\begin{frame}{Conclusão}
+    \vspace{0.5em}
+    
+    O \textbf{Anota.ai} propõe uma solução completa e inovadora para:
+    
+    \vspace{1em}
+    
+    \begin{itemize}
+        \item \textbf{Digitalização} e aprimoramento do aprendizado acadêmico
+        \item \textbf{Unificação} de áudio, slides, anotações e IA
+        \item \textbf{Redução} de perdas de conteúdo durante aulas
+        \item \textbf{Melhoria} do estudo autônomo
+        \item \textbf{Integração} entre alunos, monitores e professores
+    \end{itemize}
+    
+    \vspace{1em}
+    
+    \begin{center}
+        \Large Uma ferramenta para potencializar o aprendizado na UFBA
+    \end{center}
+\end{frame}
+
+%=================================================
+\section{Perguntas e Comentários}
+%=================================================
+\begin{frame}{Perguntas e Comentários}
+    \begin{center}
+        \Huge Obrigado!
+    \end{center}
+\end{frame}
+
+\end{document}
