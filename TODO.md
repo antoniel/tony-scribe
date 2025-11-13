@@ -2,19 +2,19 @@
 
 ## 📋 Equipe e Responsabilidades
 
-### Antoniel Magalhães de Sousa
-- Backend (NestJS)
+### Antoniel
+- Backend (Tanstack Start + Hono)
 - Integração com APIs de IA (Whisper, Gemini)
 - Banco de Dados (PostgreSQL + Drizzle ORM)
 - Serviços de transcrição e geração de conteúdo
 
-### Luis Felipe Sena
-- Frontend (React/Next.js)
+### Luis Sena
+- Frontend (React/Tanstack Start)
 - Design de Interface
 - Experiência do Usuário (UX)
 - Componentes visuais e interativos
 
-### Claudio Farias
+### Claudio
 - Infraestrutura e Deploy
 - Integração de Áudio/Transcrição
 - Configuração de servidores
@@ -33,7 +33,7 @@
 ### Sprint 1: Fundação e Protótipo Inicial
 
 #### ✅ Concluído
-- [x] Setup inicial do projeto (React + NestJS)
+- [x] Setup inicial do projeto (Tanstack Start + Hono)
 - [x] Configuração do banco de dados PostgreSQL
 - [x] Estrutura básica de componentes UI
 - [x] Sistema de roteamento (TanStack Router)
@@ -135,8 +135,8 @@
 
 ## 🔧 Tecnologias Utilizadas
 
-### Frontend
-- Next.js (React 18/19)
+### Full-Stack Framework
+- Tanstack Start (React)
 - TypeScript
 - TailwindCSS
 - Shadcn/ui
@@ -145,7 +145,7 @@
 - TipTap Editor
 
 ### Backend
-- NestJS (Node.js)
+- Hono (Web Framework)
 - PostgreSQL
 - Drizzle ORM
 - OAuth2/SAML (SSO UFBA)
@@ -166,9 +166,9 @@
 ## 📝 Decisões Técnicas
 
 ### 2025-11-12: Escolha do Framework
-- **Decisão:** Utilizar React com Next.js
-- **Motivo:** Ecossistema rico, SSR, performance, comunidade ativa
-- **Alternativas consideradas:** Vue.js, Svelte
+- **Decisão:** Utilizar Tanstack Start (React full-stack) com Hono
+- **Motivo:** Type-safety end-to-end, ecossistema rico, SSR, performance moderna
+- **Alternativas consideradas:** Next.js, Remix, Vue.js, Svelte
 
 ### 2025-11-12: ORM e Banco de Dados
 - **Decisão:** PostgreSQL com Drizzle ORM
