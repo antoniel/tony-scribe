@@ -7,12 +7,12 @@ import { AudioRecorder } from './audio-recorder'
 interface AudioRecorderCardProps {
   audioPath?: string | null
   isUploading?: boolean
-  isPendente?: boolean
+  isPending?: boolean
   onAudioFile: (file: File) => Promise<void>
-  onAudioDeletar: () => Promise<void>
+  onAudioDelete: () => Promise<void>
 }
 
-export function AudioRecorderCard({ audioPath, isUploading = false, isPendente = false, onAudioFile, onAudioDeletar }: AudioRecorderCardProps) {
+export function AudioRecorderCard({ audioPath, isUploading = false, isPending = false, onAudioFile, onAudioDelete }: AudioRecorderCardProps) {
   const [isAudioRecorderOpen, setIsAudioRecorderOpen] = useState(!!audioPath || isUploading)
 
   return (
@@ -32,9 +32,9 @@ export function AudioRecorderCard({ audioPath, isUploading = false, isPendente =
         <CollapsibleContent>
           <CardContent>
             <AudioRecorder
-              disabled={isPendente}
+              disabled={isPending}
               onAudioFile={onAudioFile}
-              onAudioDeletar={onAudioDeletar}
+              onAudioDelete={onAudioDelete}
               isUploading={isUploading}
               audioPath={audioPath || undefined}
               noCard={true}

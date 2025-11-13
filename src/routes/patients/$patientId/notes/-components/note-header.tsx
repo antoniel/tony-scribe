@@ -11,17 +11,17 @@ interface NoteHeaderProps {
   createdAt: string | null
   transcriptionStatus?: string | null
   onNameUpdate: (newName: string) => Promise<void>
-  onDeletar: () => void
+  onDelete: () => void
   onTranscribe?: () => void
-  onSalvar?: () => void
+  onSave?: () => void
   showTranscribeButton?: boolean
-  showGenerateResumoButton?: boolean
-  showSalvarButton?: boolean
+  showGenerateSummaryButton?: boolean
+  showSaveButton?: boolean
   transcribeButtonText?: string
   isTranscribing?: boolean
   isDeleting?: boolean
   isSaving?: boolean
-  generateResumoTrigger?: React.ReactNode
+  generateSummaryTrigger?: React.ReactNode
 }
 
 export function NoteHeader({
@@ -30,17 +30,17 @@ export function NoteHeader({
   createdAt,
   transcriptionStatus,
   onNameUpdate,
-  onDeletar,
+  onDelete,
   onTranscribe,
-  onSalvar,
+  onSave,
   showTranscribeButton = false,
-  showGenerateResumoButton = false,
-  showSalvarButton = false,
+  showGenerateSummaryButton = false,
+  showSaveButton = false,
   transcribeButtonText = 'Transcrever Áudio',
   isTranscribing = false,
   isDeleting = false,
   isSaving = false,
-  generateResumoTrigger
+  generateSummaryTrigger
 }: NoteHeaderProps) {
   return (
     <Card className="bg-slate-800/50 border-slate-700">
@@ -61,8 +61,8 @@ export function NoteHeader({
 
           {/* Action buttons */}
           <div className="flex items-center gap-2 shrink-0">
-            {showSalvarButton && onSalvar && (
-              <Button variant="default" size="sm" onClick={onSalvar} disabled={isSaving}>
+            {showSaveButton && onSave && (
+              <Button variant="default" size="sm" onClick={onSave} disabled={isSaving}>
                 {isSaving ? (
                   <>
                     <Loader className="w-4 h-4 mr-2 animate-spin" />
@@ -76,7 +76,7 @@ export function NoteHeader({
                 )}
               </Button>
             )}
-            {showGenerateResumoButton && generateResumoTrigger}
+            {showGenerateSummaryButton && generateSummaryTrigger}
             {showTranscribeButton && onTranscribe && (
               <Button variant="default" size="sm" onClick={onTranscribe} disabled={isTranscribing}>
                 {isTranscribing ? (
@@ -99,7 +99,7 @@ export function NoteHeader({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem variant="destructive" onClick={onDeletar} disabled={isDeleting}>
+                <DropdownMenuItem variant="destructive" onClick={onDelete} disabled={isDeleting}>
                   <Trash2 className="w-4 h-4 mr-2" />
                   Deletar Nota
                 </DropdownMenuItem>

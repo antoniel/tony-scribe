@@ -3,13 +3,13 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Copy } from 'lucide-react'
 
-interface TranscriçãoCardProps {
+interface TranscriptionCardProps {
   transcriptionText?: string | null
   transcriptionStatus?: string | null
   onCopyToNotes?: () => void
 }
 
-export function TranscriçãoCard({ transcriptionText, transcriptionStatus, onCopyToNotes }: TranscriçãoCardProps) {
+export function TranscriptionCard({ transcriptionText, transcriptionStatus, onCopyToNotes }: TranscriptionCardProps) {
   if (!transcriptionText && !transcriptionStatus) {
     return null
   }

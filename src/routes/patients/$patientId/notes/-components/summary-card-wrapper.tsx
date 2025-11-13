@@ -1,42 +1,42 @@
-import { useResumoGeneration } from './summary-generation-context'
-import { ResumoSection } from './summary-section'
+import { useSummaryGeneration } from './summary-generation-context'
+import { SummarySection } from './summary-section'
 
-interface ResumoCardWrapperProps {
+interface SummaryCardWrapperProps {
   noteId: string
-  savedResumo?: string | null
+  savedSummary?: string | null
   transcriptionText?: string | null
   rawContent?: string | null
   isSaving?: boolean
-  onSalvar: (summary: string) => Promise<void>
+  onSave: (summary: string) => Promise<void>
 }
 
-export function ResumoCardWrapper({ noteId, savedResumo, transcriptionText, rawContent, isSaving = false, onSalvar }: ResumoCardWrapperProps) {
-  const { generatedResumo, isGenerating, setGeneratedResumo } = useResumoGeneration()
+export function SummaryCardWrapper({ noteId, savedSummary, transcriptionText, rawContent, isSaving = false, onSave }: SummaryCardWrapperProps) {
+  const { generatedSummary, isGenerating, setGeneratedSummary } = useSummaryGeneration()
 
   const hasContent = transcriptionText?.trim() || rawContent?.trim()
-  const showResumoSection = savedResumo || generatedResumo || !!hasContent
+  const showSummarySection = savedSummary || generatedSummary || !!hasContent
 
-  const handleSalvarResumo = async (summary: string) => {
-    await onSalvar(summary)
-    setGeneratedResumo(null)
+  const handleSaveSummary = async (summary: string) => {
+    await onSave(summary)
+    setGeneratedSummary(null)
   }
 
-  const handleRegenerateResumo = () => {
-    setGeneratedResumo(null)
+  const handleRegenerateSummary = () => {
+    setGeneratedSummary(null)
   }
 
-  if (!showResumoSection) {
+  if (!showSummarySection) {
     return null
   }
 
   return (
-    <ResumoSection
+    <SummarySection
       noteId={noteId}
-      savedResumo={savedResumo}
-      generatedResumo={generatedResumo}
+      savedSummary={savedSummary}
+      generatedSummary={generatedSummary}
       isGenerating={isGenerating}
-      onSalvar={handleSalvarResumo}
-      onRegenerate={handleRegenerateResumo}
+      onSave={handleSaveSummary}
+      onRegenerate={handleRegenerateSummary}
       isSaving={isSaving}
     />
   )

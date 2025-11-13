@@ -5,7 +5,7 @@ import { SUMMARY_TEMPLATES, type SummaryTemplateId } from '@/lib/summary-templat
 import { Loader } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-interface ResumoTemplateDialogProps {
+interface SummaryTemplateDialogProps {
   onGenerate: (template: SummaryTemplateId) => void
   isGenerating: boolean
   error?: Error | null
@@ -13,7 +13,7 @@ interface ResumoTemplateDialogProps {
   onSuccess?: () => void
 }
 
-export function ResumoTemplateDialog({ onGenerate, isGenerating, error, trigger, onSuccess }: ResumoTemplateDialogProps) {
+export function SummaryTemplateDialog({ onGenerate, isGenerating, error, trigger, onSuccess }: SummaryTemplateDialogProps) {
   const [selectedTemplate, setSelectedTemplate] = useState<SummaryTemplateId>('soap')
   const [open, setOpen] = useState(false)
 

@@ -7,22 +7,22 @@ import { useEffect, useRef, useState } from 'react'
 
 interface AudioRecorderProps {
   onAudioFile?: (file: File) => void
-  onTranscrição?: (text: string) => void
-  onAudioDeletar?: () => void
+  onTranscription?: (text: string) => void
+  onAudioDelete?: () => void
   disabled?: boolean
   isUploading?: boolean
   audioPath?: string
   noCard?: boolean
 }
 
-export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, onAudioDeletar, noCard = false }: AudioRecorderProps) {
+export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, onAudioDelete, noCard = false }: AudioRecorderProps) {
   const [isRecording, setIsRecording] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [recordingDuration, setRecordingDuration] = useState(0)
   const [selectedDevice, setSelectedDevice] = useState('')
   const [isMuted, setIsMuted] = useState(false)
-  const [isCarregandoAudio, setIsCarregandoAudio] = useState(false)
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -42,7 +42,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
   }, [audioUrl])
 
   useEffect(() => {
-    if (audioPath && !isCarregandoAudio) {
+    if (audioPath && !isLoadingAudio) {
       const audioPathChanged = previousAudioPathRef.current !== audioPath
 
       const hasLocalBlob = audioUrl && audioUrl.startsWith('blob:')
@@ -50,7 +50,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
       if (shouldLoad) {
         previousAudioPathRef.current = audioPath
-        setIsCarregandoAudio(true)
+        setIsLoadingAudio(true)
         const loadAudioFromPath = async () => {
           try {
             if (audioUrl) {
@@ -79,7 +79,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
           } catch (error) {
             console.error('Error loading audio from path:', error)
           } finally {
-            setIsCarregandoAudio(false)
+            setIsLoadingAudio(false)
           }
         }
         loadAudioFromPath()
@@ -105,7 +105,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: selectedDevice ? { exact: selectedDevice } : undefined,
-          echoCancelarlation: true,
+          echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true
         }
@@ -200,8 +200,8 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
     setSelectedFile(null)
     setRecordingDuration(0)
 
-    if (audioPath && onAudioDeletar) {
-      onAudioDeletar()
+    if (audioPath && onAudioDelete) {
+      onAudioDelete()
     }
   }
 
@@ -215,7 +215,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
   const content = (
     <div className="space-y-6">
-      {isUploading || isCarregandoAudio ? (
+      {isUploading || isLoadingAudio ? (
         <div className="flex items-center justify-center gap-2 p-4 bg-muted/30 rounded-lg border border-border">
           <Loader className="w-5 h-5 animate-spin text-accent" />
           <span className="text-sm text-foreground">{isUploading ? 'Uploading audio...' : 'Carregando audio...'}</span>
@@ -240,7 +240,7 @@ export function AudioRecorder({ onAudioFile, disabled, isUploading, audioPath, o
 
               {audioUrl && <AudioPlayback audioUrl={audioUrl} fileName={selectedFile?.name} onClear={clearRecording} />}
 
-              <FileUploadSection disabled={disabled || isRecording || isUploading || isCarregandoAudio} onFileUpload={handleFileUpload} />
+              <FileUploadSection disabled={disabled || isRecording || isUploading || isLoadingAudio} onFileUpload={handleFileUpload} />
             </>
           )}
         </>
